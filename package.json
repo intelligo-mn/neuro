@@ -1,0 +1,58 @@
+{
+  "name": "techstar-ai",
+  "description": "A machine learning framework for Node.js. Supports multi-level classification and online learning.",
+  "version": "0.9.3",
+  "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/techstar-agency/techstar-ai.git"
+  },
+  "engines" : {
+	  "node" : ">=0.12"
+  },
+  "dependencies": {
+    "brain": "*",
+    "graph-paths": "latest",
+    "languagemodel": "latest",
+    "sprintf": "*",
+    "svm": "*",
+    "temp": "*",
+    "underscore": "*",
+    "wordsworth": "*",
+    "async": "*"
+  },
+  "devDependencies": {
+    "mocha": ">=1.0.0",
+    "should": ">=0.6.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "contributors": [
+    {
+      "name": "Turtuvshin Byambaa",
+      "email": "toroo.byamba@gmail.com"
+    }   
+  ],
+  "keywords": [
+    "classifier",
+    "classification",
+    "categorization",
+    "text classification",
+    "natural lanaguage understanding",
+    "machine learning",
+    "multi label",
+    "multilabel",
+    "multi class",
+    "multiclass",
+    "online learning",
+    "naive bayes",
+    "winnow",
+    "perceptron",
+    "SVM",
+    "Linear SVM",
+    "binary relevance",
+    "one vs all"
+  ],
+  "license": "LGPL"
+}
