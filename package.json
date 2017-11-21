@@ -1,11 +1,11 @@
 {
   "name": "techstar-ai",
-  "description": "A machine learning framework for Node.js. Supports multi-level classification and online learning.",
-  "version": "0.9.3",
+  "description": "Techstar AI Nodejs.",
+  "version": "0.9.4",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/techstar-agency/techstar-ai.git"
+    "url": "https://github.com/techstar-inc/techstar-ai.git"
   },
   "engines" : {
 	  "node" : ">=0.12"
@@ -35,24 +35,7 @@
     }   
   ],
   "keywords": [
-    "classifier",
-    "classification",
-    "categorization",
-    "text classification",
-    "natural lanaguage understanding",
-    "machine learning",
-    "multi label",
-    "multilabel",
-    "multi class",
-    "multiclass",
-    "online learning",
-    "naive bayes",
-    "winnow",
-    "perceptron",
-    "SVM",
-    "Linear SVM",
-    "binary relevance",
-    "one vs all"
+    "techstar"
   ],
-  "license": "LGPL"
+  "license": "MIT"
 }
