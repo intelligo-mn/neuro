@@ -3,4 +3,4 @@ module.exports = {
 	features: require('./features'),
 	formats: require('./formats'),
 	utils: require('./utils'),
-}
+};
