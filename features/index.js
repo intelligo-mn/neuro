@@ -21,7 +21,7 @@ module.exports.call = function(featureExtractor, sample) {
 	var features = {};
 	featureExtractor(sample, features);
 	return features;
-} 
+}; 
 
 /**
  * If the input is a featureExtractor, return it as is.
@@ -35,4 +35,4 @@ module.exports.normalize = function(featureExtractorOrArray) {
 			Array.isArray(featureExtractorOrArray)? 
 				new module.exports.CollectionOfExtractors(featureExtractorOrArray):
 				featureExtractorOrArray);	
-}
+};

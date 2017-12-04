@@ -15,4 +15,4 @@ module.exports = {
 	
 //	writeDataset: require("./trainAndTest").writeDataset,
 	hammingDistance: require("./hamming").hammingDistance,
-}
+};

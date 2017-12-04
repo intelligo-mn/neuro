@@ -3,4 +3,4 @@ module.exports = {
 	json: require("./json"),
 	tsv: require("./tsv"),
 	svmlight: require("./svmlight"),
-}
+};
