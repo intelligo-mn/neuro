@@ -10,10 +10,11 @@
  */
 module.exports = function(extractors) {
 	return function(sample, features) {
-		for (var i=0; i<extractors.length; ++i)
+		for (var i=0; i<extractors.length; ++i){
 			extractors[i](sample, features);
-	}
-}
+		}
+	};
+};
 
 
 //var async = require('async');
