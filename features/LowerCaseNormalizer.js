@@ -10,4 +10,4 @@
  */
 module.exports = function(sample) {
 	return sample.toLowerCase();
-}
+};
