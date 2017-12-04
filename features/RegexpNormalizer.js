@@ -29,5 +29,5 @@ module.exports = function(normalizations) {
 			//console.log(sample);
 		});
 		return sample;
-	}
-}
+	};
+};
