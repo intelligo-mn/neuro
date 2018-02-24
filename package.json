@@ -1,11 +1,11 @@
 {
   "name": "techstar-ai",
   "description": "Techstar AI Nodejs.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/techstar-inc/techstar-ai.git"
+    "url": "https://github.com/techstar-cloud/techstar-ai.git"
   },
   "engines" : {
 	  "node" : ">=0.12"
