@@ -1,7 +1,7 @@
 {
   "name": "techstar-ai",
   "description": "Techstar AI Nodejs.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "repository": {
     "type": "git",
@@ -11,15 +11,15 @@
 	  "node" : ">=0.12"
   },
   "dependencies": {
-    "brain": "*",
+    "async": "*",
+    "brain.js": "^1.0.5",
     "graph-paths": "latest",
     "languagemodel": "latest",
     "sprintf": "*",
     "svm": "*",
     "temp": "*",
     "underscore": "*",
-    "wordsworth": "*",
-    "async": "*"
+    "wordsworth": "*"
   },
   "devDependencies": {
     "mocha": ">=1.0.0",
