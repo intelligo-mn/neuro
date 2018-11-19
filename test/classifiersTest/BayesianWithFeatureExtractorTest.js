@@ -7,7 +7,7 @@
  */
 
 var should = require('should');
-var classifiers = require('../../classifiers');
+var classifiers = require('../../dist');
 var ftrs = require('../../features');
 
 var UnigramBayesianClassifier = classifiers.EnhancedClassifier.bind(this, {

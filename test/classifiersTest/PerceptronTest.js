@@ -6,7 +6,7 @@
  */
 
 var should = require('should');
-var classifiers = require('../../classifiers');
+var classifiers = require('../../dist');
 
 var classifier = new classifiers.Perceptron({
 	retrain_count: 1,

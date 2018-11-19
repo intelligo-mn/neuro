@@ -5,7 +5,7 @@
 
 
 var assert = require('should'),
-     classifiers = require("../../../classifiers");
+     classifiers = require("../../../dist");
 
 var wordcounts = function(sentence) {
 	return sentence.split(' ').reduce(function(counts, word) {

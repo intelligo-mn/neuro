@@ -5,7 +5,7 @@
 
 
 var assert = require('should'),
-    classifiers = require("../../../classifiers");
+    classifiers = require("../../../dist");
 
 
 

@@ -9,7 +9,7 @@
 
 var should = require('should');
 var util = require('util');
-var classifiers = require('../../../classifiers');
+var classifiers = require('../../../dist');
 
 var retrain_count = 10;
 

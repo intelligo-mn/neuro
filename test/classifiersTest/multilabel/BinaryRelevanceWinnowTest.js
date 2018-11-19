@@ -7,7 +7,7 @@
  */
 
 var should = require('should');
-var classifiers = require('../../../classifiers');
+var classifiers = require('../../../dist');
 var _ = require("underscore")._;
 
 

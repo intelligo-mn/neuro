@@ -7,7 +7,7 @@
  */
 
 var should = require('should');
-var classifiers = require('../../../classifiers');
+var classifiers = require('../../../dist');
 require('../../sorted');
 
 var BinaryRelevanceWinnow = classifiers.multilabel.BinaryRelevance.bind(this, {
