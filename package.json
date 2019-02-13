@@ -1,11 +1,11 @@
 {
-  "name": "techstar-ai",
-  "description": "Techstar AI Nodejs.",
-  "version": "1.0.8",
+  "name": "intelligo.js",
+  "description": "Intelligo machine learning for Nodejs.",
+  "version": "1.0.1",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/techstar-cloud/techstar-ai.git"
+    "url": "https://github.com/intelligo-systems/intelligo.js.git"
   },
   "engines" : {
 	  "node" : ">=0.12"
@@ -35,7 +35,22 @@
     }   
   ],
   "keywords": [
-    "techstar"
+    "ai",
+    "ai-bot",
+    "artificial-intelligence",
+    "bot",
+    "chat",
+    "chatbot",
+    "classifier",
+    "conversation",
+    "framework",
+    "intelligo",
+    "intelligence",
+    "neural network",
+    "neural",
+    "network",
+    "neural-networks",
+    "machine-learning"
   ],
   "license": "MIT"
 }
