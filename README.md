@@ -10,7 +10,7 @@ Machine learning for Node.js
 [![NPM](https://nodei.co/npm/neuro.js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/neuro.js/)
 
 | [Installation][] | [Usage][] | [Contributors][] | [License][] |
-|---|---|---|---|---|
+|---|---|---|---|
 
 # Installation
 
