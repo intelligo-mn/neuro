@@ -1,7 +1,7 @@
 {
-  "name": "intelligo.js",
-  "description": "Intelligo machine learning for Nodejs.",
-  "version": "1.0.1",
+  "name": "neuro.js",
+  "description": "Machine learning for Nodejs.",
+  "version": "0.0.2",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "repository": {
     "type": "git",
@@ -11,21 +11,30 @@
 	  "node" : ">=0.12"
   },
   "dependencies": {
-    "async": "*",
-    "brain.js": "^1.0.5",
+    "async": "3.0.1",
+    "brain.js": "^1.6.1",
     "graph-paths": "latest",
     "languagemodel": "latest",
-    "sprintf": "*",
-    "svm": "*",
-    "temp": "*",
-    "underscore": "*",
-    "wordsworth": "*"
+    "sprintf": "0.1.5",
+    "svm": "0.1.1",
+    "temp": "0.9.0",
+    "underscore": "1.9.1",
+    "wordsworth": "0.1.0"
   },
   "devDependencies": {
-    "mocha": ">=1.0.0",
-    "should": ">=0.6.0"
+    "mocha": ">=6.1.4",
+    "should": ">=13.2.3",
+    "@vuepress/plugin-google-analytics": "^1.0.0-alpha.0",
+    "vuepress": "^1.0.0-alpha.30",
+    "vuepress-plugin-janitor": "^1.0.0",
+    "vuepress-plugin-reading-time": "^0.1.1",
+    "vuepress-plugin-rss": "^2.0.0",
+    "yaml-front-matter": "^4.0.0"
   },
   "scripts": {
+    "start": "node index.js",
+    "dev": "vuepress dev web",
+    "build": "vuepress build web",
     "test": "mocha"
   },
   "contributors": [
