@@ -11,7 +11,7 @@
 	  "node" : ">=0.12"
   },
   "dependencies": {
-    "async": "3.0.1",
+    "async": "3.1.0",
     "brain.js": "1.6.1",
     "graph-paths": "latest",
     "languagemodel": "latest",
