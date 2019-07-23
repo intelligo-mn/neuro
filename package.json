@@ -22,7 +22,7 @@
     "wordsworth": "0.1.0"
   },
   "devDependencies": {
-    "mocha": "6.1.4",
+    "mocha": "6.2.0",
     "should": "13.2.3",
     "@vuepress/plugin-google-analytics": "1.0.2",
     "vuepress": "1.0.2",
