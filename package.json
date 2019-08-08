@@ -1,7 +1,7 @@
 {
   "name": "neuro.js",
   "description": "Machine learning for Nodejs.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "repository": {
     "type": "git",
@@ -11,7 +11,9 @@
     "node": ">=0.12"
   },
   "dependencies": {
+    "@babel/preset-es2015": "^7.0.0-beta.53",
     "async": "3.1.0",
+    "babel-preset-es2015": "^6.24.1",
     "brain.js": "1.6.1",
     "graph-paths": "latest",
     "languagemodel": "latest",
@@ -25,19 +27,14 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@vuepress/plugin-google-analytics": "1.0.3",
+    "@babel/register": "^7.5.5",
     "mocha": "6.2.0",
-    "should": "13.2.3",
-    "vuepress": "1.0.3",
-    "vuepress-plugin-janitor": "1.0.0",
-    "vuepress-plugin-reading-time": "0.1.1",
-    "vuepress-plugin-rss": "2.0.0",
-    "yaml-front-matter": "4.0.0"
+    "should": "13.2.3"
   },
   "scripts": {
     "start": "node index.js",
     "build": "babel src -d dist",
-    "test": "mocha"
+    "test": "mocha --require @babel/register"
   },
   "contributors": [
     {

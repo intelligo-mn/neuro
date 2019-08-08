@@ -96,7 +96,7 @@ EnhancedClassifier.prototype = {
 			} else {
 				featureExtractorForClassification = [this.featureExtractors, featureExtractorForClassification];
 			}
-			this.featureExtractorsForClassification = new ftrs.collectionOfExtractors(featureExtractorForClassification);
+			this.featureExtractorsForClassification = new ftrs.CollectionOfExtractors(featureExtractorForClassification);
 		}
 	},
 	
@@ -142,7 +142,7 @@ EnhancedClassifier.prototype = {
 				features = {};
 				featureExtractor(sample, features);
 			} catch (err) {
-				throw new Error("Cannot extract features from '"+sample+"': "+JSON.stringify(err));
+				console.error("Cannot extract features from '"+sample+"': "+JSON.stringify(err));
 			}
 		}
 

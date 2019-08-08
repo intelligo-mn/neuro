@@ -1,12 +1,3 @@
-#!mocha
-/**
- * a unit-test for Enhanced Classifier
- *
- * @author Erel Segal-Halevi
- * @since 2013-08
- */
-
-var should = require('should');
 var classifiers = require('../../src/core');
 var ftrs = require('../../src/features');
 

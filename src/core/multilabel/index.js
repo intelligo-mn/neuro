@@ -1,15 +1,9 @@
-module.exports = {
-	BinaryRelevance:        require('./BinaryRelevance'),
-	PassiveAggressive:      require('./PassiveAggressiveHash'),
-	BinarySegmentation:     require('./BinarySegmentation'),
-	MulticlassSegmentation: require('./MulticlassSegmentation'),
-	Homer:                  require('./Homer'),
-	MetaLabeler:            require('./MetaLabeler'),
-	CrossLanguageModel:     require('./CrossLangaugeModelClassifier'),
-	ThresholdClassifier:    require('./ThresholdClassifier'),
-	Adaboost:  				require('./Adaboost'),
-	PartialClassification:  require('./PartialClassification'),
-}
+export const BinaryRelevance = require('./BinaryRelevance');
+export const BinarySegmentation = require('./BinarySegmentation');
+export const MulticlassSegmentation = require('./MulticlassSegmentation');
+export const MetaLabeler = require('./MetaLabeler');
+export const CrossLanguageModel = require('./CrossLangaugeModelClassifier');
+export const ThresholdClassifier = require('./ThresholdClassifier');
 
 // add a "classify and log" method to all classifiers, for demos:
 for (var classifierClass in module.exports) {

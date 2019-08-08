@@ -126,7 +126,7 @@ exports.inner_product = function(features, weights) {
  */
 exports.inner_product_matrix = function(features, weights) {
 	var result = {};
-	for (category in weights) {
+	for (let category in weights) {
 		result[category] = exports.inner_product(features, weights[category]);
 	}
 	return result;

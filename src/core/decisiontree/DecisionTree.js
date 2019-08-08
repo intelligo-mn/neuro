@@ -81,8 +81,8 @@ DecisionTree.prototype = {
 
 	extractFeatures: function (dataset) {
 		var features = []
-		for (record in dataset) {
-			for (key in dataset[record]['input']) {
+		for (let record in dataset) {
+			for (let key in dataset[record]['input']) {
 				features.push(key)
 			}
 		}
@@ -146,7 +146,7 @@ DecisionTree.prototype = {
 	 * @param dataset an array of samples of the form {input: {feature1: value1...} , output: 0/1} 
 	 */
 	trainBatch: function (dataset) {
-		features = this.extractFeatures(dataset)
+		let features = this.extractFeatures(dataset)
 		this.root = this.createTree(dataset, features)
 	},
 
