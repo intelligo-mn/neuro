@@ -13,15 +13,14 @@ var PAD_CHAR = '#';
  * @param features an initial hash of features (optional).
  * @return a hash with all the different letter n-grams contained in the given sentence.
  */
-module.exports = function(numOfLetters, caseSensitive) {
-	return function(sample, features) {
-		if (!caseSensitive) sample=sample.toLowerCase();
-		for (var i=0; i<numOfLetters-1; ++i)
-			sample = PAD_CHAR+sample+PAD_CHAR;
-		for (var firstLetter=0; firstLetter<sample.length-numOfLetters+1; ++firstLetter) {
+export default function (numOfLetters, caseSensitive) {
+	return function (sample, features) {
+		if (!caseSensitive) sample = sample.toLowerCase();
+		for (var i = 0; i < numOfLetters - 1; ++i)
+			sample = PAD_CHAR + sample + PAD_CHAR;
+		for (var firstLetter = 0; firstLetter < sample.length - numOfLetters + 1; ++firstLetter) {
 			var feature = sample.substr(firstLetter, numOfLetters);
-			features[feature]=1;
+			features[feature] = 1;
 		}
 	}
 }
-
