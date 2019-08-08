@@ -6,7 +6,7 @@
  */
 
 var should = require('should');
-var FeatureLookupTable = require('../../features/FeatureLookupTable');
+var FeatureLookupTable = require('../../src/features/FeatureLookupTable');
 
 var sample1 = {a: 111, b: 222, c: 333};
 var sample2 = {a: 1111, d: 4444, e: 5555};

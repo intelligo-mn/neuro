@@ -6,8 +6,8 @@
  */
 
 var should = require('should');
-var classifiers = require('../../dist');
-var ftrs = require('../../features');
+var classifiers = require('../../src/core');
+var ftrs = require('../../src/features');
 
 if (!classifiers.SvmLinear.isInstalled()) {
 	console.warn("liblinear_train not found - SvmMulticlass tests skipped.");

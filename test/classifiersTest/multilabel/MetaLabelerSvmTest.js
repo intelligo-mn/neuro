@@ -8,8 +8,8 @@
 
 var should = require('should');
 var util = require('util');
-var classifiers = require('../../../dist');
-var ftrs = require('../../../features');
+var classifiers = require('../../../src/core');
+var ftrs = require('../../../src/features');
 
 require('../../sorted');
 

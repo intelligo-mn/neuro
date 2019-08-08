@@ -6,7 +6,7 @@
  */
 
 var should = require('should');
-var mlutils = require('../../utils');
+var mlutils = require('../../src/utils');
 var _ = require('underscore');
 
 describe('PrecisionRecall object', function() {

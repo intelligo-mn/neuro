@@ -6,7 +6,7 @@
 
 var _ = require('underscore');
 var should = require('should');
-var classifiers = require('../../../dist');
+var classifiers = require('../../../src/core');
 var random = require('../../generaterandom');
 var testutils = require('../../test_utils');
 var wordcounts = require('../../wordcounts');

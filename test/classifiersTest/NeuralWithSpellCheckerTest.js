@@ -7,8 +7,8 @@
 
 var should = require('should');
 var _ = require('underscore')._;
-var classifiers = require('../../dist');
-var ftrs = require('../../features');
+var classifiers = require('../../src/core');
+var ftrs = require('../../src/features');
 
 
 var RegexpTokenizer = function(options) {

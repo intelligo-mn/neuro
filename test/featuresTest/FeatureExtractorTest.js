@@ -6,7 +6,7 @@
  */
 
 var should = require('should');
-var ftrs = require('../../features');
+var ftrs = require('../../src/features');
 var _ = require('underscore')._;
 
 describe('word unigram feature extractor', function() {

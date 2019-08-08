@@ -7,7 +7,7 @@
  */
 
 var should = require('should');
-var classifiers = require('../../../dist');
+var classifiers = require('../../../src/core');
 require('../../sorted');
 
 var retrain_count = 10;

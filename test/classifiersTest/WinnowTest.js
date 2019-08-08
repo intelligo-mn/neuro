@@ -6,7 +6,7 @@
  */
 
 var should = require('should');
-var classifiers = require('../../dist');
+var classifiers = require('../../src/core');
 
 var WinnowClassifier = classifiers.Winnow.bind(this, {
 	retrain_count: 10,

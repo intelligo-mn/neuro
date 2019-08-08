@@ -22,9 +22,12 @@
     "wordsworth": "0.1.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@vuepress/plugin-google-analytics": "1.0.3",
     "mocha": "6.2.0",
     "should": "13.2.3",
-    "@vuepress/plugin-google-analytics": "1.0.3",
     "vuepress": "1.0.3",
     "vuepress-plugin-janitor": "1.0.0",
     "vuepress-plugin-reading-time": "0.1.1",
@@ -33,8 +36,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "vuepress dev web",
-    "build": "vuepress build web",
+    "build": "babel src -d dist",
     "test": "mocha"
   },
   "contributors": [

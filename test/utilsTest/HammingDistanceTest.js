@@ -7,7 +7,7 @@
  */
 
 var should = require('should');
-var mlutils = require('../../utils');
+var mlutils = require('../../src/utils');
 
 describe('Hamming distance', function() {
 	it('calculates hamming distance', function() {

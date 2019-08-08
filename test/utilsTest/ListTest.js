@@ -1,4 +1,4 @@
-var ulist = require('../../utils/list');
+var ulist = require('../../src/utils/list');
 var should = require('should');
 var _ = require('underscore');
 

@@ -6,7 +6,7 @@
  */
 
 var should = require('should');
-var ftrs = require('../../features');
+var ftrs = require('../../src/features');
 
 describe('RegexpNormalizer', function() {
 	it('normalizes simple strings', function() {
