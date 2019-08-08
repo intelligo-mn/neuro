@@ -5,13 +5,13 @@ var _ = require('underscore');
 describe('List test function', function() {
 
 	it('It should correctly calculate Variance', function() {
-		list = [170,300,430,470,600]	
+		let list = [170,300,430,470,600]	
 		ulist.variance(list).should.be.equal(21704)
 		
 		})
 
 	it('it should calculate average correctly', function() {
-		list1= [1,2,3,4,5,6,7]
+		let list1= [1,2,3,4,5,6,7]
 		ulist.average(list1).should.be.equal(4)
 	})
 

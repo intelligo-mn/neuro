@@ -3,22 +3,23 @@ var sprintf = require("sprintf").sprintf;
 var _ = require("underscore")._;
 var multilabelutils = require('./multilabelutils');
 // var fs = require('fs');
-
 /**
- * BinaryRelevance - Multi-label classifier, based on a collection of binary classifiers. 
+ * BinaryRelevance - Multi-label classifier, based on a collection of binary classifiers.
  * Also known as: One-vs-All.
- * 
+ *
  * @param opts
- *            binaryClassifierType (mandatory) - the type of the base binary classifier. There is one such classifier per label. 
+ *            binaryClassifierType (mandatory) - the type of the base binary classifier. There is one such classifier per label.
  */
-var BinaryRelevance = function (opts) {
-	if (!opts.binaryClassifierType) {
-		console.dir(opts);
-		throw new Error("opts.binaryClassifierType not found");
+class BinaryRelevance {
+	constructor(opts) {
+		if (!opts.binaryClassifierType) {
+			console.dir(opts);
+			throw new Error("opts.binaryClassifierType not found");
+		}
+		this.binaryClassifierType = opts.binaryClassifierType;
+		this.debug = opts.debug || false;
+		this.mapClassnameToClassifier = {};
 	}
-	this.binaryClassifierType = opts.binaryClassifierType;
-	this.debug = opts.debug || false
-	this.mapClassnameToClassifier = {};
 }
 
 BinaryRelevance.prototype = {
@@ -131,7 +132,7 @@ BinaryRelevance.prototype = {
 			var score = scoreWithExplain.explanation ? scoreWithExplain.classification : scoreWithExplain;
 			if (this.debug) console.dir("score=" + score)
 
-			explanations_string = scoreWithExplain.explanation
+			let explanations_string = scoreWithExplain.explanation
 
 			// if (score>0.5)
 			if (score > 0) {
