@@ -1,10 +1,11 @@
 /**
- * FeatureLookupTable - a table for converting features to numbers and vice versa 
+ * FeatureLookupTable - a table for converting features to numbers and vice versa
  */
-
-var FeatureLookupTable = function() {
-	this.featureIndexToFeatureName = [undefined];
-	this.featureNameToFeatureIndex = {undefined: 0};
+class FeatureLookupTable {
+	constructor() {
+		this.featureIndexToFeatureName = [undefined];
+		this.featureNameToFeatureIndex = { undefined: 0 };
+	}
 }
 
 FeatureLookupTable.prototype = {

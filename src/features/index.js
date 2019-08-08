@@ -1,27 +1,22 @@
-module.exports = {
-	NGramsFromArray: require("./NGramsFromArray"),
-	NGramsOfWords:  require("./NGramsOfWords"),
-	NGramsOfLetters: require("./NGramsOfLetters"),
-
-	Hypernyms: require("./HypernymExtractor"),
-	CollectionOfExtractors: require("./CollectionOfExtractors"),
-	FeatureLookupTable: require("./FeatureLookupTable"),
-	
-	LowerCaseNormalizer: require("./LowerCaseNormalizer"),
-	RegexpNormalizer: require("./RegexpNormalizer"),
-
-	RegexpSplitter: require("./RegexpSplitter"),
-};
+export const NGramsFromArray = require("./NGramsFromArray");
+export const NGramsOfWords = require("./NGramsOfWords");
+export const NGramsOfLetters = require("./NGramsOfLetters");
+export const Hypernyms = require("./HypernymExtractor");
+export const CollectionOfExtractors = require("./CollectionOfExtractors").default;
+export const FeatureLookupTable = require("./FeatureLookupTable");
+export const LowerCaseNormalizer = require("./LowerCaseNormalizer");
+export const RegexpNormalizer = require("./RegexpNormalizer");
+export const RegexpSplitter = require("./RegexpSplitter");
 
 /**
  * Call the given featureExtractor on the given sample, and return the result.
  * Used for testing.
  */
-module.exports.call = function(featureExtractor, sample) {
+export function call(featureExtractor, sample) {
 	var features = {};
 	featureExtractor(sample, features);
 	return features;
-}; 
+} 
 
 /**
  * If the input is a featureExtractor, return it as is.
@@ -29,10 +24,10 @@ module.exports.call = function(featureExtractor, sample) {
  * If it is an array of featureExtractors, convert it to a CollectionOfExtractors.
  *
  */
-module.exports.normalize = function(featureExtractorOrArray) {
+export function normalize(featureExtractorOrArray) {
 	return (!featureExtractorOrArray? 
 				featureExtractorOrArray:
 			Array.isArray(featureExtractorOrArray)? 
-				new module.exports.CollectionOfExtractors(featureExtractorOrArray):
+				new CollectionOfExtractors(featureExtractorOrArray):
 				featureExtractorOrArray);	
-};
+}
