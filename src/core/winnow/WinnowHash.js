@@ -13,31 +13,30 @@
  *  <li>bias - constant (bias) factor (default: 1).
  */
  
-var hash = require("../../utils/hash");
-var sprintf = require("sprintf").sprintf;  // for explanations
+import { normalize_sum_of_values_to_1, add } from "../../utils/hash";
+import { sprintf } from "sprintf";  // for explanations
 
-function WinnowHash(opts) {
-	if (!opts) opts = {}
-
-	this.debug = opts.debug || false; 
-		
-	// Default values are based on Carvalho and Cohen, 2006, section 4.2:	
-	this.default_positive_weight = opts.default_positive_weight || 2.0;
-	this.default_negative_weight = opts.default_negative_weight || 1.0;
-	this.do_averaging = opts.do_averaging || false;
-	this.threshold = ('threshold' in opts? opts.threshold: 1);
-	this.promotion = opts.promotion || 1.5;
-	this.demotion = opts.demotion || 0.5;
-	this.margin = ('margin' in opts? opts.margin: 1.0);
-	this.retrain_count = opts.retrain_count || 0;
-	this.detailed_explanations = opts.detailed_explanations || false;
-	
-	this.bias = ('bias' in opts? opts.bias: 1.0);
-
-	this.positive_weights = {};
-	this.negative_weights = {};
-	this.positive_weights_sum = {};   // for averaging; count only weight vectors with successful predictions (Carvalho and Cohen, 2006).
-	this.negative_weights_sum = {};   // for averaging; count only weight vectors with successful predictions (Carvalho and Cohen, 2006).
+class WinnowHash {
+	constructor(opts) {
+		if (!opts)
+			opts = {};
+		this.debug = opts.debug || false;
+		// Default values are based on Carvalho and Cohen, 2006, section 4.2:	
+		this.default_positive_weight = opts.default_positive_weight || 2.0;
+		this.default_negative_weight = opts.default_negative_weight || 1.0;
+		this.do_averaging = opts.do_averaging || false;
+		this.threshold = ('threshold' in opts ? opts.threshold : 1);
+		this.promotion = opts.promotion || 1.5;
+		this.demotion = opts.demotion || 0.5;
+		this.margin = ('margin' in opts ? opts.margin : 1.0);
+		this.retrain_count = opts.retrain_count || 0;
+		this.detailed_explanations = opts.detailed_explanations || false;
+		this.bias = ('bias' in opts ? opts.bias : 1.0);
+		this.positive_weights = {};
+		this.negative_weights = {};
+		this.positive_weights_sum = {}; // for averaging; count only weight vectors with successful predictions (Carvalho and Cohen, 2006).
+		this.negative_weights_sum = {}; // for averaging; count only weight vectors with successful predictions (Carvalho and Cohen, 2006).
+	}
 }
 
 
@@ -69,7 +68,7 @@ WinnowHash.prototype = {
 					if (!(feature in this.positive_weights))
 						delete features[feature];
 			}
-			hash.normalize_sum_of_values_to_1(features);
+			normalize_sum_of_values_to_1(features);
 		},
 
 		/**
@@ -112,8 +111,8 @@ WinnowHash.prototype = {
 				return false;
 			} else {
 				if (this.do_averaging) {
-					hash.add(this.positive_weights_sum, this.positive_weights);
-					hash.add(this.negative_weights_sum, this.negative_weights);
+					add(this.positive_weights_sum, this.positive_weights);
+					add(this.negative_weights_sum, this.negative_weights);
 				}
 				return true;
 			}
@@ -234,5 +233,5 @@ WinnowHash.prototype = {
 		},
 }
 
-module.exports = WinnowHash;
+export default WinnowHash;
 
