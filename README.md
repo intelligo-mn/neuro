@@ -5,11 +5,11 @@
 [![GitHub license](https://img.shields.io/github/license/intelligo-systems/neuro.js.svg)](https://github.com/intelligo-systems/neuro.js/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/intelligo-systems/neuro.js.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fintelligo-systems%2Fintelligo)
 
-Machine learning for Node.js
+Neuro.js is machine learning framework for building AI assistants and chat-bots.
 
 [![NPM](https://nodei.co/npm/neuro.js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/neuro.js/)
 
-| [Installation][] | [Usage][] | [Contributors][] | [License][] |
+| [Installation][] | [Documentation][] | [Contributors][] | [License][] |
 |---|---|---|---|
 
 # Installation
@@ -18,22 +18,10 @@ Machine learning for Node.js
 npm install neuro.js --save
 ```
 
-# Usage
+## Documentation
 
-```js
-'use strict';
+To check out docs, visit [neuro.js.org](https://neuro.js.org).
 
-var neuro = require('neuro.js');
-
-var robot = new neuro.NeuralNetwork();
-
-robot.train([
-	{ input: 'I feel great about the world!', output: 'happy' },
-    { input: 'The world is a terrible place!', output: 'sad' }
-	]);
-
-console.log(robot.classify('The world is a terrible place'));  // sad
-```
 
 ## Contributors
 
@@ -50,7 +38,7 @@ or translating any document here to your language. [Find more information in COD
 **[⬆ back to top](#neuro.js)**
 
 [Installation]:#installation
-[Usage]:#usage
+[Documentation]:#documentation
 [Contributors]:#contributors
 [License]:#license
 
