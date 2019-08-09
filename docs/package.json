@@ -5,7 +5,7 @@
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/intelligo-systems/intelligo.git"
+    "url": "https://github.com/intelligo-systems/neuro.git"
   },
   "engines": {
     "node": ">=0.12"
@@ -43,6 +43,7 @@
     "intelligence",
     "neural network",
     "neural",
+    "neuro",
     "network",
     "neural-networks",
     "machine-learning"
