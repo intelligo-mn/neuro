@@ -4,7 +4,7 @@ module.exports = {
 	themeConfig: {
 		repo: 'https://github.com/intelligo-systems/neuro.js',
 		repoLabel: 'Repo',
-		docsDir: './web',
+		docsDir: './docs',
 		editLinks: true,
 		logo: '/logo.png',
 		editLinkText: 'Found a bug? Help me improve this page!',
