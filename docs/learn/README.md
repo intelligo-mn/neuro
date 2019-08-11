@@ -3,8 +3,6 @@ sidebar: auto
 type: guide
 ---
 
-# neuro.js
-
 [![npm](https://img.shields.io/npm/v/neuro.js.svg?style=plastic)](https://www.npmjs.com/package/neuro.js)
 [![npm](https://img.shields.io/npm/dt/neuro.js.svg?style=plastic)](https://www.npmjs.com/package/neuro.js)
 [![GitHub license](https://img.shields.io/github/license/intelligo-systems/neuro.js.svg)](https://github.com/intelligo-systems/neuro.js/blob/master/LICENSE)
