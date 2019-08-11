@@ -1,6 +1,11 @@
+"use strict";
+
+var _DecisionTree = _interopRequireDefault(require("./DecisionTree"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 console.log("Decision Tree demo start");
-import DecisionTree from './DecisionTree';
-var classifier = new DecisionTree({});
+var classifier = new _DecisionTree["default"]({});
 dataset = [{
   input: {
     a: 1,

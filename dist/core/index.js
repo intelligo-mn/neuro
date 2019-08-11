@@ -1,17 +1,50 @@
-export const NeuralNetwork = require('./neural/NeuralNetwork');
-export const Bayesian = require('./bayesian/bayesian');
-export const kNN = require('./kNN/kNN');
-export const SvmJs = require('./svm/SvmJs');
-export const SvmPerf = require('./svm/SvmPerf');
-export const SvmLinear = require('./svm/SvmLinear');
-export const Perceptron = require('./perceptron/PerceptronHash');
-export const Winnow = require('./winnow/WinnowHash');
-export const DecisionTree = require('./decisiontree/DecisionTree');
-export const multilabel = require('./multilabel');
-export const EnhancedClassifier = require('./EnhancedClassifier'); // add a "classify and log" method to all classifiers, for demos:
+"use strict";
 
-for (var classifierClass in module.exports) {
-  if (module.exports[classifierClass].prototype && module.exports[classifierClass].prototype.classify) module.exports[classifierClass].prototype.classifyAndLog = function (sample) {
-    console.log(sample + " is " + this.classify(sample));
-  };
-}
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EnhancedClassifier = exports.multilabel = exports.DecisionTree = exports.Winnow = exports.Perceptron = exports.SvmLinear = exports.SvmPerf = exports.SvmJs = exports.kNN = exports.Bayesian = exports.NeuralNetwork = void 0;
+
+var NeuralNetwork = require('./neural/NeuralNetwork');
+
+exports.NeuralNetwork = NeuralNetwork;
+
+var Bayesian = require('./bayesian/bayesian');
+
+exports.Bayesian = Bayesian;
+
+var kNN = require('./kNN/kNN');
+
+exports.kNN = kNN;
+
+var SvmJs = require('./svm/SvmJs');
+
+exports.SvmJs = SvmJs;
+
+var SvmPerf = require('./svm/SvmPerf');
+
+exports.SvmPerf = SvmPerf;
+
+var SvmLinear = require('./svm/SvmLinear');
+
+exports.SvmLinear = SvmLinear;
+
+var Perceptron = require('./perceptron/PerceptronHash');
+
+exports.Perceptron = Perceptron;
+
+var Winnow = require('./winnow/WinnowHash')["default"];
+
+exports.Winnow = Winnow;
+
+var DecisionTree = require('./decisiontree/DecisionTree');
+
+exports.DecisionTree = DecisionTree;
+
+var multilabel = require('./multilabel');
+
+exports.multilabel = multilabel;
+
+var EnhancedClassifier = require('./EnhancedClassifier');
+
+exports.EnhancedClassifier = EnhancedClassifier;

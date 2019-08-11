@@ -6,7 +6,7 @@
  */
 
 var should = require('should');
-var ftrs = require('../../src/features');
+var ftrs = require('../../dist/features');
 
 describe('RegexpSplitter', function() {
 	it('splits sentences without delimiter', function() {

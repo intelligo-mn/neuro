@@ -1,3 +1,7 @@
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var hash = require("../../utils/hash");
 
 var sprintf = require("sprintf").sprintf;
@@ -7,15 +11,17 @@ var _ = require("underscore")._;
 var multilabelutils = require('./multilabelutils'); // var fs = require('fs');
 
 /**
- * BinaryRelevance - Multi-label classifier, based on a collection of binary classifiers. 
+ * BinaryRelevance - Multi-label classifier, based on a collection of binary classifiers.
  * Also known as: One-vs-All.
- * 
+ *
  * @param opts
- *            binaryClassifierType (mandatory) - the type of the base binary classifier. There is one such classifier per label. 
+ *            binaryClassifierType (mandatory) - the type of the base binary classifier. There is one such classifier per label.
  */
 
 
-var BinaryRelevance = function (opts) {
+var BinaryRelevance = function BinaryRelevance(opts) {
+  _classCallCheck(this, BinaryRelevance);
+
   if (!opts.binaryClassifierType) {
     console.dir(opts);
     throw new Error("opts.binaryClassifierType not found");
@@ -35,7 +41,7 @@ BinaryRelevance.prototype = {
    * @param labels
    *            an object whose KEYS are labels, or an array whose VALUES are labels.
    */
-  trainOnline: function (sample, labels) {
+  trainOnline: function trainOnline(sample, labels) {
     labels = multilabelutils.normalizeOutputLabels(labels);
 
     for (var l in labels) {
@@ -56,7 +62,7 @@ BinaryRelevance.prototype = {
    *            an array with objects of the format: 
    *            {input: sample1, output: [class11, class12...]}
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     // this variable will hold a dataset for each binary classifier:
     var mapClassnameToDataset = {}; // create positive samples for each class:
 
@@ -113,7 +119,7 @@ BinaryRelevance.prototype = {
    *					   negative - features of classifiers with negative labels
    * classes [list] the list of given labels
    */
-  classify: function (sample, explain, withScores) {
+  classify: function classify(sample, explain, withScores) {
     var labels = [];
     var scores = [];
     var explanations = [];
@@ -128,7 +134,7 @@ BinaryRelevance.prototype = {
       if (this.debug) console.log(JSON.stringify(scoreWithExplain, null, 4));
       var score = scoreWithExplain.explanation ? scoreWithExplain.classification : scoreWithExplain;
       if (this.debug) console.dir("score=" + score);
-      explanations_string = scoreWithExplain.explanation; // if (score>0.5)
+      var explanations_string = scoreWithExplain.explanation; // if (score>0.5)
 
       if (score > 0) {
         labels.push([label, score]);
@@ -174,7 +180,7 @@ BinaryRelevance.prototype = {
       }
     } : labels;
   },
-  classifyBatch: function (testSet) {
+  classifyBatch: function classifyBatch(testSet) {
     var labels = [];
     var results = {};
     var output = [];
@@ -195,20 +201,22 @@ BinaryRelevance.prototype = {
 
     return testSet;
   },
-  getAllClasses: function () {
+  getAllClasses: function getAllClasses() {
     return Object.keys(this.mapClassnameToClassifier);
   },
 
   /**
    * Link to a FeatureLookupTable from a higher level in the hierarchy (typically from an EnhancedClassifier), used ONLY for generating meaningful explanations. 
    */
-  setFeatureLookupTable: function (featureLookupTable) {
+  setFeatureLookupTable: function setFeatureLookupTable(featureLookupTable) {
     //console.log("BR setFeatureLookupTable "+featureLookupTable);
     this.featureLookupTable = featureLookupTable;
 
-    for (var label in this.mapClassnameToClassifier) if (featureLookupTable && this.mapClassnameToClassifier[label].setFeatureLookupTable) this.mapClassnameToClassifier[label].setFeatureLookupTable(featureLookupTable);
+    for (var label in this.mapClassnameToClassifier) {
+      if (featureLookupTable && this.mapClassnameToClassifier[label].setFeatureLookupTable) this.mapClassnameToClassifier[label].setFeatureLookupTable(featureLookupTable);
+    }
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     var result = {};
 
     for (var label in this.mapClassnameToClassifier) {
@@ -226,14 +234,14 @@ BinaryRelevance.prototype = {
 
     return result;
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     for (var label in json) {
       this.mapClassnameToClassifier[label] = new this.binaryClassifierType();
       this.mapClassnameToClassifier[label].fromJSON(json[label]);
     }
   },
   // private function: 
-  makeSureClassifierExists: function (label) {
+  makeSureClassifierExists: function makeSureClassifierExists(label) {
     if (!this.mapClassnameToClassifier[label]) {
       // make sure classifier exists
       this.mapClassnameToClassifier[label] = new this.binaryClassifierType();

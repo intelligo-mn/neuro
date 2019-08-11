@@ -7,7 +7,7 @@
  */
 
 var should = require('should');
-var classifiers = require('../../../src/core');
+var classifiers = require('../../../dist/core');
 
 var BinaryRelevanceBayes = classifiers.multilabel.BinaryRelevance.bind(this, {
 		binaryClassifierType: classifiers.Bayesian.bind(this, {

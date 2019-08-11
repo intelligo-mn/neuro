@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * A wrapper for karpathy's SVM.js package: https://github.com/karpathy/svmjs
  *
@@ -16,10 +18,10 @@ function SvmJs(opts) {
 }
 
 SvmJs.prototype = {
-  trainOnline: function (features, label) {
+  trainOnline: function trainOnline(features, label) {
     throw new Error("svm.js does not support online training");
   },
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     var data = [];
     var labels = [];
     dataset.forEach(function (datum) {
@@ -35,7 +37,7 @@ SvmJs.prototype = {
    * @param continuous_output if true, return the net classification score. If false [default], return 0 or 1.
    * @return the binary classification - 0 or 1.
    */
-  classify: function (features, explain, continuous_output) {
+  classify: function classify(features, explain, continuous_output) {
     var score = this.base.marginOne(features);
     var classification = continuous_output ? score : score > 0 ? 1 : 0;
 
@@ -74,10 +76,10 @@ SvmJs.prototype = {
       return classification;
     }
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     return this.base.toJSON();
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.base.fromJSON(json);
   }
 };

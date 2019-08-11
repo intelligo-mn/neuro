@@ -1,3 +1,5 @@
+"use strict";
+
 // simple demonstration of SVM
 var SvmJs = require('./SvmJs');
 

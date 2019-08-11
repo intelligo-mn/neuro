@@ -6,8 +6,8 @@
  */
 
 var should = require('should');
-var classifiers = require('../../src/core');
-var ftrs = require('../../src/features');
+var classifiers = require('../../dist/core');
+var ftrs = require('../../dist/features');
 
 describe('baseline - classifier without a normalizer', function() {
 	it('errs on non-normalized sentencs', function() {

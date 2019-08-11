@@ -6,8 +6,8 @@
  */
 
 var should = require('should');
-var classifiers = require('../../src/core');
-var ftrs = require('../../src/features');
+var classifiers = require('../../dist/core');
+var ftrs = require('../../dist/features');
 
 function test(name, SvmClassifier) {
 	describe(name+' with numeric features', function() {

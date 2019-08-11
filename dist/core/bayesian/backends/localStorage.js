@@ -1,6 +1,8 @@
+"use strict";
+
 var _ = require("underscore")._;
 
-var LocalStorageBackend = function (options) {
+var LocalStorageBackend = function LocalStorageBackend(options) {
   options = options || {};
   var name = options.name || Math.floor(Math.random() * 100000);
   this.prefix = 'classifier.bayesian.' + name;
@@ -18,26 +20,26 @@ var LocalStorageBackend = function (options) {
 
 LocalStorageBackend.prototype = {
   async: false,
-  getCats: function () {
+  getCats: function getCats() {
     return JSON.parse(this.storage[this.prefix + '.cats']);
   },
-  setCats: function (cats) {
+  setCats: function setCats(cats) {
     this.storage[this.prefix + '.cats'] = JSON.stringify(cats);
   },
-  getWordCount: function (word) {
+  getWordCount: function getWordCount(word) {
     return JSON.parse(this.storage[this.prefix + '.words.' + word] || '{}');
   },
-  setWordCount: function (word, counts) {
+  setWordCount: function setWordCount(word, counts) {
     this.storage[this.prefix + '.words.' + word] = JSON.stringify(counts);
   },
-  getWordCounts: function (words) {
+  getWordCounts: function getWordCounts(words) {
     var counts = {};
     words.forEach(function (word) {
       counts[word] = this.getWordCount(word);
     }, this);
     return counts;
   },
-  incCounts: function (catIncs, wordIncs) {
+  incCounts: function incCounts(catIncs, wordIncs) {
     var cats = this.getCats();
 
     _(catIncs).each(function (inc, cat) {
@@ -56,7 +58,7 @@ LocalStorageBackend.prototype = {
       this.setWordCount(word, wordCounts);
     }, this);
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     var words = {};
     var regex = new RegExp("^" + this.prefix + "\\.words\\.(.+)$");
 
@@ -73,7 +75,7 @@ LocalStorageBackend.prototype = {
       words: words
     };
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.incCounts(json.cats, json.words);
   }
 };

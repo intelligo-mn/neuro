@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Static utilities for hashes (= associative arrays = Javascript objects).
  * 
@@ -142,7 +144,7 @@ exports.inner_product = function (features, weights) {
 exports.inner_product_matrix = function (features, weights) {
   var result = {};
 
-  for (category in weights) {
+  for (var category in weights) {
     result[category] = exports.inner_product(features, weights[category]);
   }
 
@@ -152,7 +154,9 @@ exports.inner_product_matrix = function (features, weights) {
 exports.sum_of_values = function (weights) {
   var result = 0;
 
-  for (var feature in weights) result += weights[feature];
+  for (var feature in weights) {
+    result += weights[feature];
+  }
 
   return result;
 };
@@ -160,7 +164,9 @@ exports.sum_of_values = function (weights) {
 exports.sum_of_absolute_values = function (weights) {
   var result = 0;
 
-  for (var feature in weights) result += Math.abs(weights[feature]);
+  for (var feature in weights) {
+    result += Math.abs(weights[feature]);
+  }
 
   return result;
 };
@@ -168,7 +174,9 @@ exports.sum_of_absolute_values = function (weights) {
 exports.sum_of_square_values = function (weights) {
   var result = 0;
 
-  for (var feature in weights) result += Math.pow(weights[feature], 2);
+  for (var feature in weights) {
+    result += Math.pow(weights[feature], 2);
+  }
 
   return result;
 };
@@ -227,7 +235,9 @@ exports.normalized = function (object) {
   if (Array.isArray(object)) {
     var result = {};
 
-    for (var i = 0; i < object.length; ++i) result[stringifyIfNeeded(object[i])] = true;
+    for (var i = 0; i < object.length; ++i) {
+      result[stringifyIfNeeded(object[i])] = true;
+    }
 
     return result;
   } else if (object instanceof Object) {
@@ -239,7 +249,7 @@ exports.normalized = function (object) {
   }
 };
 
-var stringifyIfNeeded = function (label) {
+var stringifyIfNeeded = function stringifyIfNeeded(label) {
   return typeof label === 'string' ? label : JSON.stringify(label);
 };
 /*

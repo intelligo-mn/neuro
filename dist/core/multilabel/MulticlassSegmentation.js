@@ -1,3 +1,5 @@
+"use strict";
+
 var hash = require("../../utils/hash");
 
 var FeaturesUnit = require("../../features");
@@ -21,7 +23,7 @@ var _ = require("underscore")._;
  */
 
 
-var MulticlassSegmentation = function (opts) {
+var MulticlassSegmentation = function MulticlassSegmentation(opts) {
   if (!opts.multiclassClassifierType) {
     console.dir(opts);
     throw new Error("opts.multiclassClassifierType not found");
@@ -41,7 +43,7 @@ MulticlassSegmentation.prototype = {
    * @param classes
    *            an object whose KEYS are classes, or an array whose VALUES are classes.
    */
-  trainOnline: function (sample, classes) {
+  trainOnline: function trainOnline(sample, classes) {
     sample = this.sampleToFeatures(sample, this.featureExtractor);
     var category = Array.isArray(classes) ? classes[0] : classes;
     this.multiclassClassifier.trainOnline(sample, category);
@@ -62,7 +64,7 @@ MulticlassSegmentation.prototype = {
    *            an array with objects of the format: 
    *            {input: sample1, output: [class11, class12...]}
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     for (var i = 0; i < dataset.length; ++i) {
       dataset[i] = {
         input: this.sampleToFeatures(dataset[i].input, this.featureExtractor),
@@ -81,7 +83,7 @@ MulticlassSegmentation.prototype = {
    *  
    * @return {category: xxx, probability: yyy}
    */
-  classifySegment: function (segment, explain) {
+  classifySegment: function classifySegment(segment, explain) {
     var sample = this.sampleToFeatures(segment, this.featureExtractor);
     return this.multiclassClassifier.classify(sample, explain);
   },
@@ -90,7 +92,7 @@ MulticlassSegmentation.prototype = {
    * @param segment a part of a text sentence.
    * @return {category: best_category_of_segment, probability: its_probability}
    */
-  bestClassOfSegment: function (segment) {
+  bestClassOfSegment: function bestClassOfSegment(segment) {
     var sample = this.sampleToFeatures(segment, this.featureExtractor);
     var classification = this.multiclassClassifier.classify(sample, 1); //console.log(segment+": ");	console.dir(classification)
 
@@ -104,7 +106,7 @@ MulticlassSegmentation.prototype = {
    * Morbini Fabrizio, Sagae Kenji. Joint Identification and Segmentation of Domain-Specific Dialogue Acts for Conversational Dialogue Systems. ACL-HLT 2011
   	 * http://www.citeulike.org/user/erelsegal-halevi/article/10259046
    */
-  cheapestSegmentSplitStrategy: function (words, accumulatedClasses, explain, explanations) {
+  cheapestSegmentSplitStrategy: function cheapestSegmentSplitStrategy(words, accumulatedClasses, explain, explanations) {
     // Calculate the cost of classification of the segment from i to j.
     // (Cost = - log probability).
     var segmentClassificationCosts = []; // best cost to classify segment [i,j]
@@ -112,7 +114,9 @@ MulticlassSegmentation.prototype = {
     for (var start = 0; start <= words.length; ++start) {
       segmentClassificationCosts[start] = [];
 
-      for (var end = 0; end < start; ++end) segmentClassificationCosts[start][end] = Infinity;
+      for (var end = 0; end < start; ++end) {
+        segmentClassificationCosts[start][end] = Infinity;
+      }
 
       segmentClassificationCosts[start][start] = 0;
 
@@ -158,7 +162,7 @@ MulticlassSegmentation.prototype = {
    *  
    * @return an array whose VALUES are classes.
    */
-  classify: function (sentence, explain) {
+  classify: function classify(sentence, explain) {
     var minWordsToSplit = 2;
     var words = sentence.split(/ /);
 
@@ -175,22 +179,21 @@ MulticlassSegmentation.prototype = {
       return this.classifySegment(sentence, explain);
     }
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     return this.multiclassClassifier.toJSON();
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.multiclassClassifier.fromJSON(json);
   },
   // private function: 
-  sampleToFeatures: function (sample, featureExtractor) {
+  sampleToFeatures: function sampleToFeatures(sample, featureExtractor) {
     var features = sample;
 
     if (featureExtractor) {
       try {
         features = {};
         featureExtractor(sample, features);
-      } catch (err) {
-        throw new Error("Cannot extract features from '" + JSON.stringify(sample) + "': " + JSON.stringify(err));
+      } catch (err) {// throw new Error("Cannot extract features from '"+JSON.stringify(sample)+"': "+JSON.stringify(err));
       }
     }
 

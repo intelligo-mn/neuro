@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Static utility function for training and testing classifiers.
  * 
@@ -378,11 +380,11 @@ module.exports.learningCurve = function (createNewClassifierFunction, datasets, 
   }
 };
 
-var stringifyClass = function (aClass) {
+var stringifyClass = function stringifyClass(aClass) {
   return _(aClass).isString() ? aClass : JSON.stringify(aClass);
 };
 
-var normalizeClasses = function (expectedClasses) {
+var normalizeClasses = function normalizeClasses(expectedClasses) {
   if (!_(expectedClasses).isArray()) expectedClasses = [expectedClasses];
   expectedClasses = expectedClasses.map(stringifyClass);
   expectedClasses.sort();

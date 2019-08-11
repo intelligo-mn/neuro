@@ -5,7 +5,7 @@
  */
 
 var should = require('should');
-var classifiers = require('../../src/core');
+var classifiers = require('../../dist/core');
 
 var DecisionTree = classifiers.DecisionTree.bind(this, {
 });

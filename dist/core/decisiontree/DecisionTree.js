@@ -1,3 +1,5 @@
+"use strict";
+
 /* Implementation of Decision Tree classifier, ID3 implementation
    the code based on https://github.com/bugless/nodejs-decision-tree-id3/blob/master/lib/decision-tree.js
  */
@@ -8,13 +10,13 @@ function DecisionTree(opts) {
 }
 
 DecisionTree.prototype = {
-  toJSON: function () {
+  toJSON: function toJSON() {
     return this.root;
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.root = json;
   },
-  createTree: function (dataset, features) {
+  createTree: function createTree(dataset, features) {
     var targets = _.unique(_.pluck(dataset, 'output'));
 
     if (targets.length == 1) {
@@ -64,31 +66,31 @@ DecisionTree.prototype = {
     }, this);
     return node;
   },
-  mostCommon: function (l) {
+  mostCommon: function mostCommon(l) {
     return _.sortBy(l, function (a) {
       return this.count(a, l);
     }, this).reverse()[0];
   },
-  count: function (a, l) {
+  count: function count(a, l) {
     return _.filter(l, function (b) {
       return b === a;
     }).length;
   },
-  randomTag: function () {
+  randomTag: function randomTag() {
     return "_r" + Math.round(Math.random() * 1000000).toString();
   },
-  extractFeatures: function (dataset) {
+  extractFeatures: function extractFeatures(dataset) {
     var features = [];
 
-    for (record in dataset) {
-      for (key in dataset[record]['input']) {
+    for (var record in dataset) {
+      for (var key in dataset[record]['input']) {
         features.push(key);
       }
     }
 
     return features;
   },
-  gain: function (dataset, feature) {
+  gain: function gain(dataset, feature) {
     var attrVals = _.unique(_.pluck(_.pluck(dataset, 'input'), feature));
 
     var setEntropy = this.entropy(_.pluck(dataset, 'output'));
@@ -106,7 +108,7 @@ DecisionTree.prototype = {
     }, 0);
     return setEntropy - sumOfEntropies;
   },
-  entropy: function (vals) {
+  entropy: function entropy(vals) {
     var uniqueVals = _.unique(vals);
 
     var probs = uniqueVals.map(function (x) {
@@ -119,7 +121,7 @@ DecisionTree.prototype = {
       return a + b;
     }, 0);
   },
-  prob: function (val, vals) {
+  prob: function prob(val, vals) {
     var instances = _.filter(vals, function (x) {
       return x === val;
     }).length;
@@ -127,15 +129,15 @@ DecisionTree.prototype = {
     var total = vals.length;
     return instances / total;
   },
-  log2: function (n) {
+  log2: function log2(n) {
     return Math.log(n) / Math.log(2);
   },
-  maxGain: function (dataset, features) {
+  maxGain: function maxGain(dataset, features) {
     return _.max(features, function (e) {
       return this.gain(dataset, e);
     }, this);
   },
-  setFeatureLookupTable: function (featureLookupTable) {
+  setFeatureLookupTable: function setFeatureLookupTable(featureLookupTable) {
     this.featureLookupTable = featureLookupTable;
   },
 
@@ -144,8 +146,8 @@ DecisionTree.prototype = {
    *
    * @param dataset an array of samples of the form {input: {feature1: value1...} , output: 0/1} 
    */
-  trainBatch: function (dataset) {
-    features = this.extractFeatures(dataset);
+  trainBatch: function trainBatch(dataset) {
+    var features = this.extractFeatures(dataset);
     this.root = this.createTree(dataset, features);
   },
 
@@ -155,7 +157,7 @@ DecisionTree.prototype = {
    * @param explain - int - if positive, an "explanation" field, with the given length, will be added to the result.  
    * @return the classification of the sample.
    */
-  classify: function (features) {
+  classify: function classify(features) {
     root = this.root;
 
     while (root.type !== "result") {

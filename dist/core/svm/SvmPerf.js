@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * A wrapper for Thorsten Joachims' SVM-perf package.
  *
@@ -49,7 +51,7 @@ SvmPerf.isInstalled = function () {
 var FIRST_FEATURE_NUMBER = 1; // in svm perf, feature numbers start with 1, not 0!
 
 SvmPerf.prototype = {
-  trainOnline: function (features, expected) {
+  trainOnline: function trainOnline(features, expected) {
     //throw new Error("SVM-perf does not support online training");
     console.error("SVM-perf does not support online training");
   },
@@ -59,7 +61,7 @@ SvmPerf.prototype = {
    *
    * @param dataset an array of samples of the form {input: [value1, value2, ...] , output: 0/1}
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     if (this.debug) console.log("trainBatch start");
     var timestamp = new Date().getTime() + "_" + process.pid;
     var learnFile = svmcommon.writeDatasetToFile(dataset, this.bias,
@@ -80,14 +82,14 @@ SvmPerf.prototype = {
     this.setModel(fs.readFileSync(modelFile, "utf-8"));
     if (this.debug) console.log("trainBatch end");
   },
-  setModel: function (modelString) {
+  setModel: function setModel(modelString) {
     this.modelString = modelString;
     this.mapFeatureToWeight = modelStringToModelMap(modelString); // weights in modelMap start from 0 (- the bias).
 
     if (this.debug) console.dir(this.mapFeatureToWeight); // console.log("maps"+JSON.stringify(_.keys(this.mapFeatureToWeight).length, null, 4))
     // process.exit(0)
   },
-  getFeatures: function () {
+  getFeatures: function getFeatures() {
     var featlist = [];
 
     _.each(this.mapFeatureToWeight, function (weight, index, list) {
@@ -99,7 +101,7 @@ SvmPerf.prototype = {
     });
     return featlist;
   },
-  getModelWeights: function () {
+  getModelWeights: function getModelWeights() {
     return this.mapFeatureToWeight;
   },
 
@@ -109,21 +111,21 @@ SvmPerf.prototype = {
    * @param continuous_output if true, return the net classification score. If false [default], return 0 or 1.
    * @return the binary classification - 0 or 1.
    */
-  classify: function (features, explain, continuous_output) {
+  classify: function classify(features, explain, continuous_output) {
     return svmcommon.classifyWithModelMap(this.mapFeatureToWeight, this.bias, features, explain, continuous_output, this.featureLookupTable);
   },
 
   /**
    * Link to a FeatureLookupTable from a higher level in the hierarchy (typically from an EnhancedClassifier), used ONLY for generating meaningful explanations.
    */
-  setFeatureLookupTable: function (featureLookupTable) {
+  setFeatureLookupTable: function setFeatureLookupTable(featureLookupTable) {
     //console.log("SVMPERF setFeatureLookupTable "+featureLookupTable);
     this.featureLookupTable = featureLookupTable;
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     return this.mapFeatureToWeight;
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.mapFeatureToWeight = json;
   }
 };

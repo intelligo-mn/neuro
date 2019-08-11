@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * A wrapper for Heather Arthur's brain.js package: https://github.com/harthur/brain
  *

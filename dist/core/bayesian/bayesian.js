@@ -1,3 +1,5 @@
+"use strict";
+
 var _ = require("underscore")._;
 /**
  * A multi-class single-label Bayes classifier.
@@ -8,11 +10,11 @@ var _ = require("underscore")._;
  */
 
 
-var Bayesian = function (options) {
+var Bayesian = function Bayesian(options) {
   options = options || {};
   this.thresholds = options.thresholds || {};
   this.globalThreshold = options.globalThreshold || 1;
-  this.default = options.default || 'unclassified';
+  this["default"] = options["default"] || 'unclassified';
   this.weight = options.weight || 1;
   this.assumed = options.assumed || 0.5;
   this.normalizeOutputProbabilities = options.normalizeOutputProbabilities || false;
@@ -42,7 +44,7 @@ Bayesian.prototype = {
    * @param document [string] a training sample - a feature-value hash: {feature1: value1, feature2: value2, ...}
    * @param category [string] the correct category of this sample.
    */
-  trainOnline: function (document, category) {
+  trainOnline: function trainOnline(document, category) {
     this.incDocCounts([{
       input: document,
       output: category
@@ -54,7 +56,7 @@ Bayesian.prototype = {
    * @param data an array with objects of the format: {input: sample1, output: category1}
    * where sample1 is a feature-value hash: {feature1: value1, feature2: value2, ...}
    */
-  trainBatch: function (data) {
+  trainBatch: function trainBatch(data) {
     this.incDocCounts(data);
   },
 
@@ -64,7 +66,7 @@ Bayesian.prototype = {
    * @return the most probable category of this sample.
    * If explain>0, also return the probability of each category.
    */
-  classify: function (document, explain) {
+  classify: function classify(document, explain) {
     if (!_.isObject(document)) {
       throw new Error("document should be a feature-value hash, but it is " + JSON.stringify(document));
     }
@@ -90,7 +92,7 @@ Bayesian.prototype = {
    * @param document a hash {feature1: value1, feature2: value2, ...}
    * Values are numeric and represent number of occurences.
    */
-  getProbsSync: function (document) {
+  getProbsSync: function getProbsSync(document) {
     var cats = this.getCats(); // a hash with the possible categories: { 'cat1': 1, 'cat2': 1 }
 
     var counts = this.getWordCounts(Object.keys(document), cats); // For each word encountered during training, the counts of times it occurred in each category.
@@ -102,7 +104,9 @@ Bayesian.prototype = {
         return memo + num;
       }, 0);
 
-      for (var cat in probs) probs[cat] = probs[cat] / sum;
+      for (var cat in probs) {
+        probs[cat] = probs[cat] / sum;
+      }
     }
 
     var pairs = _.pairs(probs); // pairs of [category,probability], for all categories that appeared in the training set.
@@ -111,7 +115,7 @@ Bayesian.prototype = {
 
     if (pairs.length == 0) {
       return {
-        category: this.default,
+        category: this["default"],
         probability: 0
       };
     }
@@ -128,14 +132,14 @@ Bayesian.prototype = {
    * @param pairs [[category,probability],...]
    * @return{category: most-probable-category, probability: its-probability}
    */
-  bestMatch: function (pairs) {
+  bestMatch: function bestMatch(pairs) {
     var maxCategory = pairs[0][0];
     var maxProbability = pairs[0][1];
 
     if (pairs.length > 1) {
       var nextProbability = pairs[1][1];
       var threshold = this.thresholds[maxCategory] || this.globalThreshold;
-      if (nextProbability * threshold > maxProbability) maxCategory = this.default; // not greater than other category by enough
+      if (nextProbability * threshold > maxProbability) maxCategory = this["default"]; // not greater than other category by enough
 
       if (this.calculateRelativeProbabilities) maxProbability /= nextProbability;
     }
@@ -145,13 +149,13 @@ Bayesian.prototype = {
       probability: maxProbability
     };
   },
-  toJSON: function (callback) {
+  toJSON: function toJSON(callback) {
     return this.backend.toJSON(callback);
   },
-  fromJSON: function (json, callback) {
+  fromJSON: function fromJSON(json, callback) {
     this.backend.fromJSON(json, callback);
   },
-  getCats: function (callback) {
+  getCats: function getCats(callback) {
     return this.backend.getCats(callback);
   },
 
@@ -160,7 +164,7 @@ Bayesian.prototype = {
    *	Internal functions (should be private):
    *
    */
-  wordProb: function (word, cat, cats, wordCounts) {
+  wordProb: function wordProb(word, cat, cats, wordCounts) {
     // times word appears in a doc in this cat / docs in this cat
     var probWordGivenCat = (wordCounts[cat] || 0) / cats[cat];
 
@@ -173,7 +177,7 @@ Bayesian.prototype = {
 
     return modifiedProbGivenCat;
   },
-  getCatProbs: function (cats, document, counts) {
+  getCatProbs: function getCatProbs(cats, document, counts) {
     var numDocs = _(cats).reduce(function (sum, count) {
       return sum + count;
     }, 0); // total number of training samples in all categories
@@ -200,7 +204,7 @@ Bayesian.prototype = {
 
     return probs;
   },
-  getWordCounts: function (words, cats, callback) {
+  getWordCounts: function getWordCounts(words, cats, callback) {
     return this.backend.getWordCounts(words, cats, callback);
   },
 
@@ -209,7 +213,7 @@ Bayesian.prototype = {
    * @param data an array with objects of the format: {input: sample1, output: class1}
    * where sample1 is a feature-value hash: {feature1: value1, feature2: value2, ...}
    */
-  incDocCounts: function (samples, callback) {
+  incDocCounts: function incDocCounts(samples, callback) {
     // accumulate all the pending increments
     var wordIncs = {};
     var catIncs = {};
@@ -228,7 +232,7 @@ Bayesian.prototype = {
     }, this);
     return this.backend.incCounts(catIncs, wordIncs, callback);
   },
-  setThresholds: function (thresholds) {
+  setThresholds: function setThresholds(thresholds) {
     this.thresholds = thresholds;
   }
 };

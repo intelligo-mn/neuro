@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * A simple Perceptron implementation.
  *
@@ -19,7 +21,7 @@
  */
 var hash = require("../../utils/hash");
 
-var PerceptronHash = function (opts) {
+var PerceptronHash = function PerceptronHash(opts) {
   if (!opts) opts = {};
   this.debug = opts.debug || false;
   this.default_weight = opts.default_weight || 0;
@@ -32,21 +34,23 @@ var PerceptronHash = function (opts) {
 };
 
 PerceptronHash.prototype = {
-  toJSON: function () {
+  toJSON: function toJSON() {
     return {
       weights: this.weights,
       weights_sum: this.weights_sum
     };
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.weights = json.weights;
     this.weights_sum = json.weights_sum;
   },
-  normalized_features: function (features, remove_unknown_features) {
+  normalized_features: function normalized_features(features, remove_unknown_features) {
     features['bias'] = 1;
 
     if (remove_unknown_features) {
-      for (var feature in features) if (!(feature in this.weights)) delete features[feature];
+      for (var feature in features) {
+        if (!(feature in this.weights)) delete features[feature];
+      }
     }
 
     if (this.do_normalization) hash.normalize_sum_of_values_to_1(features);
@@ -58,8 +62,10 @@ PerceptronHash.prototype = {
    * @param expected the classification value for that sample (0 or 1)
    * @return true if the input sample got its correct classification (i.e. no change made).
    */
-  train_features: function (features, expected) {
-    for (feature in features) if (!(feature in this.weights)) this.weights[feature] = this.default_weight;
+  train_features: function train_features(features, expected) {
+    for (feature in features) {
+      if (!(feature in this.weights)) this.weights[feature] = this.default_weight;
+    }
 
     var result = this.perceive_features(features,
     /*net=*/
@@ -71,7 +77,9 @@ PerceptronHash.prototype = {
       // Current model is incorrect - adjustment needed!
       if (this.debug) console.log('> adjusting weights...', this.weights, features);
 
-      for (var feature in features) this.adjust(result, expected, features[feature], feature);
+      for (var feature in features) {
+        this.adjust(result, expected, features[feature], feature);
+      }
 
       if (this.debug) console.log(' -> weights:', this.weights);
     } else {
@@ -88,7 +96,7 @@ PerceptronHash.prototype = {
    * @param expected the classification value for that sample (0 or 1)
    * @return true if the input sample got its correct classification (i.e. no change made).
    */
-  trainOnline: function (features, expected) {
+  trainOnline: function trainOnline(features, expected) {
     return this.train_features(this.normalized_features(features,
     /*remove_unknown_features=*/
     false), expected);
@@ -99,16 +107,22 @@ PerceptronHash.prototype = {
    *
    * @param dataset an array of samples of the form {input: {feature1: value1...} , output: 0/1} 
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     var normalized_features = [];
 
-    for (var i = 0; i < dataset.length; ++i) normalized_features[i] = this.normalized_features(dataset[i].input,
-    /*remove_unknown_features=*/
-    false);
+    for (var i = 0; i < dataset.length; ++i) {
+      normalized_features[i] = this.normalized_features(dataset[i].input,
+      /*remove_unknown_features=*/
+      false);
+    }
 
-    for (var r = 0; r <= this.retrain_count; ++r) for (var i = 0; i < normalized_features.length; ++i) this.train_features(normalized_features[i], dataset[i].output);
+    for (var r = 0; r <= this.retrain_count; ++r) {
+      for (var i = 0; i < normalized_features.length; ++i) {
+        this.train_features(normalized_features[i], dataset[i].output);
+      }
+    }
   },
-  adjust: function (result, expected, input, feature) {
+  adjust: function adjust(result, expected, input, feature) {
     var delta = (expected - result) * this.learning_rate * input;
     if (isNaN(delta)) throw new Error('delta is NaN!! result=' + result + " expected=" + expected + " input=" + input + " feature=" + feature);
     this.weights[feature] += delta;
@@ -121,7 +135,7 @@ PerceptronHash.prototype = {
    * @param continuous_output if true, return the net classification value. If false [default], return 0 or 1.
    * @return the classification of the sample.
    */
-  perceive_features: function (features, continuous_output, weights_for_classification, explain) {
+  perceive_features: function perceive_features(features, continuous_output, weights_for_classification, explain) {
     var score = hash.inner_product(features, weights_for_classification);
     if (this.debug) console.log("> perceive_features ", features, " = ", score);
     var result = continuous_output ? score : score > 0 ? 1 : 0;
@@ -143,7 +157,7 @@ PerceptronHash.prototype = {
    * @param continuous_output if true, return the net classification score. If false [default], return 0 or 1.
    * @return the classification of the sample.
    */
-  classify: function (features, explain, continuous_output) {
+  classify: function classify(features, explain, continuous_output) {
     return this.perceive_features(this.normalized_features(features,
     /*remove_unknown_features=*/
     true), continuous_output, this.do_averaging ? this.weights_sum : this.weights, explain);

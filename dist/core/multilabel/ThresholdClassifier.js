@@ -1,3 +1,5 @@
+"use strict";
+
 var hash = require("../../utils/hash");
 
 var sprintf = require("sprintf").sprintf;
@@ -22,7 +24,7 @@ var ulist = require('../../utils/list');
  */
 
 
-var ThresholdClassifier = function (opts) {
+var ThresholdClassifier = function ThresholdClassifier(opts) {
   opts = opts || {};
 
   if (!('multiclassClassifierType' in opts)) {
@@ -60,7 +62,7 @@ var ThresholdClassifier = function (opts) {
 };
 
 ThresholdClassifier.prototype = {
-  trainOnline: function (sample, labels) {
+  trainOnline: function trainOnline(sample, labels) {
     throw new Error("ThresholdClassifier does not support online training");
   },
 
@@ -75,7 +77,7 @@ ThresholdClassifier.prototype = {
    * @author Vasily Konovalov
    * 
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     _.times(3, function (n) {
       dataset = _.shuffle(dataset);
     });
@@ -111,7 +113,7 @@ ThresholdClassifier.prototype = {
   /*
   * Classify dataset and return the scored result in sorted list
   */
-  receiveScores: function (dataset) {
+  receiveScores: function receiveScores(dataset) {
     list_of_scores = [];
     FN = 0;
 
@@ -147,7 +149,7 @@ ThresholdClassifier.prototype = {
   @param  testSet test set
   @param FN false negative
   */
-  CalculatePerformance: function (list_of_scores, testSet, FN) {
+  CalculatePerformance: function CalculatePerformance(list_of_scores, testSet, FN) {
     current_set = [];
     TRUE = 0;
     FP = 0;
@@ -200,21 +202,21 @@ ThresholdClassifier.prototype = {
 
     return result[index];
   },
-  classify: function (sample, explain) {
+  classify: function classify(sample, explain) {
     return this.multiclassClassifier.classify(sample, explain,
     /*withScores=*/
     false);
   },
-  getAllClasses: function () {
+  getAllClasses: function getAllClasses() {
     return this.multiclassClassifier.getAllClasses();
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     return this.multiclassClassifier.toJSON();
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.multiclassClassifier.fromJSON(json);
   },
-  setFeatureLookupTable: function (featureLookupTable) {
+  setFeatureLookupTable: function setFeatureLookupTable(featureLookupTable) {
     if (this.multiclassClassifier.setFeatureLookupTable) this.multiclassClassifier.setFeatureLookupTable(featureLookupTable);
   }
 };

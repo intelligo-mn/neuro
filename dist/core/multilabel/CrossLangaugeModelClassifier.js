@@ -1,3 +1,5 @@
+"use strict";
+
 var hash = require("../../utils/hash");
 
 var sprintf = require("sprintf").sprintf;
@@ -22,7 +24,7 @@ var CrossLanguageModel = require('languagemodel').CrossLanguageModel;
  */
 
 
-var CrossLanguageModelClassifier = function (opts) {
+var CrossLanguageModelClassifier = function CrossLanguageModelClassifier(opts) {
   this.model = new CrossLanguageModel(opts);
   this.labelFeatureExtractor = opts.labelFeatureExtractor;
   this.threshold = opts.threshold || 0;
@@ -39,7 +41,7 @@ CrossLanguageModelClassifier.prototype = {
    * I asked: "suppose there is an input sentence "Where is the robot and how do I use it?" and it is labeled with two different output sentences: "The robot is there" and "Read the instructions".   What exactly do you put in the training set in this case?"
    * And Anton Leusky replied: "in your example, both labels are in the training set. The goal is to have the classifier to rank these labels above all others for question "Where is the robot and how do I use it?" The order in which the correct labels are ranked is irrelevant. "
    */
-  trainOnline: function (features, labels) {
+  trainOnline: function trainOnline(features, labels) {
     this.model.trainOnline(features, // input features
     this.labelsToFeatures(labels)); // output features
   },
@@ -51,7 +53,7 @@ CrossLanguageModelClassifier.prototype = {
    *			an array with objects of the format: 
    *			{input: sample1, output: [class11, class12...]}
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     dataset = dataset.map(function (datum) {
       return {
         input: datum.input,
@@ -60,7 +62,7 @@ CrossLanguageModelClassifier.prototype = {
     }, this);
     this.model.trainBatch(dataset);
   },
-  classify: function (features, explain, withScores) {
+  classify: function classify(features, explain, withScores) {
     var scoresVector = [];
 
     for (var labelString in this.allLabels) {
@@ -81,7 +83,7 @@ CrossLanguageModelClassifier.prototype = {
   /**
    * @return an array with all possible output labels.
    */
-  getAllClasses: function () {
+  getAllClasses: function getAllClasses() {
     return Object.keys(this.allLabels);
   },
 
@@ -90,7 +92,7 @@ CrossLanguageModelClassifier.prototype = {
    * 
    * Converts an array of output labels to a hash of features.
    */
-  labelsToFeatures: function (labels) {
+  labelsToFeatures: function labelsToFeatures(labels) {
     if (!Array.isArray(labels)) labels = [labels];
     var features = {};
 
@@ -114,13 +116,13 @@ CrossLanguageModelClassifier.prototype = {
 
     return features;
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     return {
       allLabels: this.allLabels,
       model: this.model.toJSON()
     };
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.allLabels = json.allLabels;
     this.model.fromJSON(json);
   }

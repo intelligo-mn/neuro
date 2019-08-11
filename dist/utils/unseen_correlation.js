@@ -1,3 +1,5 @@
+"use strict";
+
 /*
 	Correlation between unseen words and False Negative 
 

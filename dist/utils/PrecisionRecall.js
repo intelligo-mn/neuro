@@ -1,3 +1,5 @@
+"use strict";
+
 var hash = require("./hash");
 
 var sprintf = require('sprintf').sprintf;
@@ -16,7 +18,7 @@ var _ = require('underscore')._;
 
 
 https: //github.com/erelsgl/limdu/blob/d61166c91a81daee62e3d67d5fff2b06cee8191f/utils/PrecisionRecall.js
-var PrecisionRecall = function () {
+var PrecisionRecall = function PrecisionRecall() {
   this.count = 0;
   this.TP = 0;
   this.TN = 0;
@@ -36,7 +38,7 @@ PrecisionRecall.prototype = {
    * @param expected - the expected result (true/false).
    * @param actual   - the actual   result (true/false).
    */
-  addCase: function (expected, actual) {
+  addCase: function addCase(expected, actual) {
     this.count++;
     if (expected && actual) this.TP++;
     if (!expected && actual) this.FP++;
@@ -52,7 +54,7 @@ PrecisionRecall.prototype = {
    * @param actualClasses   - the actual   set of classes (as an array or a hash).
    * @return an array of explanations "FALSE POSITIVE", "FALSE NEGATIVE", and maybe also "TRUE POSITIVE"
    */
-  addCasesLabels: function (expectedClasses, actualClasses) {
+  addCasesLabels: function addCasesLabels(expectedClasses, actualClasses) {
     var explanations = [];
     actualClasses = hash.normalized(actualClasses);
     expectedClasses = hash.normalized(expectedClasses);
@@ -93,7 +95,7 @@ PrecisionRecall.prototype = {
   },
 
   /* intented to calculate macro and micro average */
-  addPredicition: function (expected, actual) {
+  addPredicition: function addPredicition(expected, actual) {
     this.addCasesHash(expected, actual, 1);
     this.addCasesLabels(expected, actual);
   },
@@ -106,7 +108,7 @@ PrecisionRecall.prototype = {
    * @param logTruePositives- if true, log the true positives. 
    * @return an array of explanations "FALSE POSITIVE", "FALSE NEGATIVE", and maybe also "TRUE POSITIVE"
    */
-  addCases: function (expectedClasses, actualClasses, logTruePositives) {
+  addCases: function addCases(expectedClasses, actualClasses, logTruePositives) {
     var explanations = [];
     actualClasses = hash.normalized(actualClasses);
     expectedClasses = hash.normalized(expectedClasses);
@@ -150,7 +152,7 @@ PrecisionRecall.prototype = {
        * @author Vasily Konovalov
   	 */
   //  micro - average
-  addCasesHash: function (expectedClasses, actualClasses, logTruePositives) {
+  addCasesHash: function addCasesHash(expectedClasses, actualClasses, logTruePositives) {
     var explanations = {};
     explanations['TP'] = [];
     explanations['FP'] = [];
@@ -195,7 +197,7 @@ PrecisionRecall.prototype = {
     return explanations;
   },
   // example of usage see in test
-  addCasesHashSeq: function (expectedClasses, actualClasses, logTruePositives) {
+  addCasesHashSeq: function addCasesHashSeq(expectedClasses, actualClasses, logTruePositives) {
     var ex = [];
     var ac = [];
     var matchlist = []; // clean up expected list
@@ -340,12 +342,12 @@ PrecisionRecall.prototype = {
     };
   },
   // simple intersection
-  intersection: function (begin, end) {
+  intersection: function intersection(begin, end) {
     if (begin[0] <= end[0] && begin[1] >= end[0]) return true;
     if (begin[0] >= end[0] && begin[0] <= end[1]) return true;
     return false;
   },
-  retrieveLabels: function () {
+  retrieveLabels: function retrieveLabels() {
     _.each(Object.keys(this.labels), function (label, key, list) {
       this.labels[label]['Recall'] = this.labels[label]['TP'] / (this.labels[label]['TP'] + this.labels[label]['FN']);
       this.labels[label]['Precision'] = this.labels[label]['TP'] / (this.labels[label]['TP'] + this.labels[label]['FP']);
@@ -361,7 +363,7 @@ PrecisionRecall.prototype = {
     this.labels = _.object(arlabels);
     return this.labels;
   },
-  retrieveStats: function () {
+  retrieveStats: function retrieveStats() {
     stats = {};
     this.calculateStatsNoReturn();
     stats['TP'] = this.TP;
@@ -390,7 +392,7 @@ PrecisionRecall.prototype = {
 
     return stats;
   },
-  calculateStatsNoReturn: function () {
+  calculateStatsNoReturn: function calculateStatsNoReturn() {
     this.macroPrecision = 0;
     this.macroRecall = 0;
     this.macroF1 = 0;
@@ -436,11 +438,11 @@ PrecisionRecall.prototype = {
   /**
    * After the experiment is done, call this method to calculate the performance statistics.
    */
-  calculateStats: function () {
+  calculateStats: function calculateStats() {
     this.calculateStatsNoReturn();
     return this;
   },
-  calculateMacroAverageStats: function (numOfFolds) {
+  calculateMacroAverageStats: function calculateMacroAverageStats(numOfFolds) {
     hash.multiply_scalar(this, 1.0 / numOfFolds);
     this.shortStatsString = sprintf("Accuracy=%1.0f%% HammingGain=%1.0f%% Precision=%1.0f%% Recall=%1.0f%% F1=%1.0f%% timePerSample=%1.0f[ms]", this.Accuracy * 100, this.HammingGain * 100, this.Precision * 100, this.Recall * 100, this.F1 * 100, this.timePerSampleMillis);
   },
@@ -448,14 +450,14 @@ PrecisionRecall.prototype = {
   /**
    * @return the full set of statistics for the most recent experiment.
    */
-  fullStats: function () {
+  fullStats: function fullStats() {
     return this;
   },
 
   /**
    * @return a one-line summary of the main results of the most recent experiment.
    */
-  shortStats: function () {
+  shortStats: function shortStats() {
     return this.shortStatsString;
   }
 };

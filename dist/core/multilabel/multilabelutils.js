@@ -1,3 +1,5 @@
+"use strict";
+
 var _ = require("underscore")._;
 /**
  * A utility function, used by several multi-label classifiers.
@@ -11,7 +13,7 @@ var _ = require("underscore")._;
 
 module.exports = {
   // iterate the list and collect the second item from the every element of the list
-  getvalue: function (list) {
+  getvalue: function getvalue(list) {
     val = [];
 
     for (elem in list) {
@@ -20,23 +22,23 @@ module.exports = {
 
     return val;
   },
-  normalizeClasses: function (expectedClasses) {
+  normalizeClasses: function normalizeClasses(expectedClasses) {
     if (!_(expectedClasses).isArray()) expectedClasses = [expectedClasses];
     expectedClasses = expectedClasses.map(this.stringifyClass);
     expectedClasses.sort();
     return expectedClasses;
   },
-  stringifyClass: function (aClass) {
+  stringifyClass: function stringifyClass(aClass) {
     return _(aClass).isString() ? aClass : JSON.stringify(aClass);
   },
-  stringifyIfNeeded: function (label) {
+  stringifyIfNeeded: function stringifyIfNeeded(label) {
     return typeof label === 'string' ? label : JSON.stringify(label);
   },
-  normalizeOutputLabels: function (labels) {
+  normalizeOutputLabels: function normalizeOutputLabels(labels) {
     if (!Array.isArray(labels)) labels = [labels];
     return labels.map(module.exports.stringifyIfNeeded);
   },
-  mapScoresVectorToMultilabelResult: function (scoresVector, explain, withScores, threshold) {
+  mapScoresVectorToMultilabelResult: function mapScoresVectorToMultilabelResult(scoresVector, explain, withScores, threshold) {
     var results;
 
     if (withScores) {

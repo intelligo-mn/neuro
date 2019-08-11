@@ -1,23 +1,20 @@
-/**
- * A version of Modified Balanced Winnow (Carvalho and Cohen, 2006)
- *    where the weights vector is a hash (not a numeric array), 
- *    so the features can be any objects (not just nubmers).
- * @author Erel Segal-haLevi
- * @since 2013-06-03
- * 
- * @param opts optional parameters: <ul>
- *	<li>debug 
- *  <li>default_positive_weight, default_negative_weight: default weight for a newly discovered feature (default = 2, 1).
- *  <li>promotion, demotion, threshold, margin - explained in the paper.
- *  <li>retrain_count - number of times to retrain in batch mode. Default = 0 (no retrain).
- *  <li>bias - constant (bias) factor (default: 1).
- */
-var hash = require("../../utils/hash");
+"use strict";
 
-var sprintf = require("sprintf").sprintf; // for explanations
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
+var _hash = require("../../utils/hash");
 
-function WinnowHash(opts) {
+var _sprintf = require("sprintf");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// for explanations
+var WinnowHash = function WinnowHash(opts) {
+  _classCallCheck(this, WinnowHash);
+
   if (!opts) opts = {};
   this.debug = opts.debug || false; // Default values are based on Carvalho and Cohen, 2006, section 4.2:	
 
@@ -36,10 +33,10 @@ function WinnowHash(opts) {
   this.positive_weights_sum = {}; // for averaging; count only weight vectors with successful predictions (Carvalho and Cohen, 2006).
 
   this.negative_weights_sum = {}; // for averaging; count only weight vectors with successful predictions (Carvalho and Cohen, 2006).
-}
+};
 
 WinnowHash.prototype = {
-  toJSON: function (folder) {
+  toJSON: function toJSON(folder) {
     return {
       positive_weights: this.positive_weights,
       negative_weights: this.negative_weights,
@@ -47,7 +44,7 @@ WinnowHash.prototype = {
       negative_weights_sum: this.negative_weights_sum
     };
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     if (!json.positive_weights) throw new Error("No positive weights in json: " + JSON.stringify(json));
     this.positive_weights = json.positive_weights;
     this.positive_weights_sum = json.positive_weights_sum;
@@ -55,14 +52,16 @@ WinnowHash.prototype = {
     this.negative_weights = json.negative_weights;
     this.negative_weights_sum = json.negative_weights_sum;
   },
-  editFeatureValues: function (features, remove_unknown_features) {
+  editFeatureValues: function editFeatureValues(features, remove_unknown_features) {
     if (this.bias && !('bias' in features)) features['bias'] = 1;
 
     if (remove_unknown_features) {
-      for (var feature in features) if (!(feature in this.positive_weights)) delete features[feature];
+      for (var feature in features) {
+        if (!(feature in this.positive_weights)) delete features[feature];
+      }
     }
 
-    hash.normalize_sum_of_values_to_1(features);
+    (0, _hash.normalize_sum_of_values_to_1)(features);
   },
 
   /**
@@ -70,7 +69,7 @@ WinnowHash.prototype = {
    * @param expected the classification value for that sample (0 or 1)
    * @return true if the input sample got its correct classification (i.e. no change made).
    */
-  train_features: function (features, expected) {
+  train_features: function train_features(features, expected) {
     if (this.debug) console.log("train_features " + JSON.stringify(features) + " , " + expected);
 
     for (feature in features) {
@@ -104,8 +103,8 @@ WinnowHash.prototype = {
       return false;
     } else {
       if (this.do_averaging) {
-        hash.add(this.positive_weights_sum, this.positive_weights);
-        hash.add(this.negative_weights_sum, this.negative_weights);
+        (0, _hash.add)(this.positive_weights_sum, this.positive_weights);
+        (0, _hash.add)(this.negative_weights_sum, this.negative_weights);
       }
 
       return true;
@@ -119,7 +118,7 @@ WinnowHash.prototype = {
    * @param expected the classification value for that sample (0 or 1).
    * @return true if the input sample got its correct classification (i.e. no change made).
    */
-  trainOnline: function (features, expected) {
+  trainOnline: function trainOnline(features, expected) {
     this.editFeatureValues(features,
     /*remove_unknown_features=*/
     false);
@@ -131,14 +130,20 @@ WinnowHash.prototype = {
    *
    * @param dataset an array of samples of the form {input: {feature1: value1...} , output: 0/1} 
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     //			var normalized_inputs = [];
-    for (var i = 0; i < dataset.length; ++i) this.editFeatureValues(dataset[i].input,
-    /*remove_unknown_features=*/
-    false); //				normalized_inputs[i] = this.normalized_features(dataset[i].input, /*remove_unknown_features=*/false);
+    for (var i = 0; i < dataset.length; ++i) {
+      this.editFeatureValues(dataset[i].input,
+      /*remove_unknown_features=*/
+      false);
+    } //				normalized_inputs[i] = this.normalized_features(dataset[i].input, /*remove_unknown_features=*/false);
 
 
-    for (var r = 0; r <= this.retrain_count; ++r) for (var i = 0; i < dataset.length; ++i) this.train_features(dataset[i].input, dataset[i].output);
+    for (var r = 0; r <= this.retrain_count; ++r) {
+      for (var i = 0; i < dataset.length; ++i) {
+        this.train_features(dataset[i].input, dataset[i].output);
+      }
+    }
   },
 
   /**
@@ -149,7 +154,7 @@ WinnowHash.prototype = {
     the weights vector to use (either the running 'weights' or 'weights_sum').  
    * @return the classification of the sample.
    */
-  perceive_features: function (features, continuous_output, positive_weights_for_classification, negative_weights_for_classification, explain) {
+  perceive_features: function perceive_features(features, continuous_output, positive_weights_for_classification, negative_weights_for_classification, explain) {
     var score = 0;
     var explanations = [];
 
@@ -183,7 +188,7 @@ WinnowHash.prototype = {
         if (explain > 0) explanations.push({
           feature: feature,
           value: value,
-          weight: sprintf("+%1.3f-%1.3f=%1.3f", positive_weight, negative_weight, net_weight),
+          weight: (0, _sprintf.sprintf)("+%1.3f-%1.3f=%1.3f", positive_weight, negative_weight, net_weight),
           relevance: relevance
         });
       }
@@ -202,7 +207,7 @@ WinnowHash.prototype = {
 
       if (!this.detailed_explanations) {
         explanations = explanations.map(function (e) {
-          return sprintf("%s%+1.2f", e.feature, e.relevance);
+          return (0, _sprintf.sprintf)("%s%+1.2f", e.feature, e.relevance);
         });
       }
 
@@ -221,7 +226,7 @@ WinnowHash.prototype = {
    * @param explain - int - if positive, an "explanation" field, with the given length, will be added to the result.  
    * @return the classification of the sample.
    */
-  classify: function (features, explain, continuous_output) {
+  classify: function classify(features, explain, continuous_output) {
     this.editFeatureValues(features,
     /*remove_unknown_features=*/
     true);
@@ -229,4 +234,5 @@ WinnowHash.prototype = {
     features, continuous_output, this.do_averaging ? this.positive_weights_sum : this.positive_weights, this.do_averaging ? this.negative_weights_sum : this.negative_weights, explain);
   }
 };
-module.exports = WinnowHash;
+var _default = WinnowHash;
+exports["default"] = _default;

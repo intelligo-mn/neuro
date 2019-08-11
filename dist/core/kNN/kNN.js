@@ -1,3 +1,7 @@
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var _ = require("underscore")._;
 
 var fs = require("fs");
@@ -6,23 +10,22 @@ var fs = require("fs");
  */
 
 
-class kNN {
-  constructor(opts) {
-    this.k = opts.k;
-    this.mode = opts.mode;
-    this.distanceFunctionList = opts.distanceFunctionList;
-    this.distanceWeightening = opts.distanceWeightening;
-    this.labels = [];
-  }
+var kNN = function kNN(opts) {
+  _classCallCheck(this, kNN);
 
-}
+  this.k = opts.k;
+  this.mode = opts.mode;
+  this.distanceFunctionList = opts.distanceFunctionList;
+  this.distanceWeightening = opts.distanceWeightening;
+  this.labels = [];
+};
 
 kNN.prototype = {
-  trainOnline: function (sample, labels) {},
-  trainBatch: function (dataset) {
+  trainOnline: function trainOnline(sample, labels) {},
+  trainBatch: function trainBatch(dataset) {
     this.dataset = dataset;
   },
-  classify: function (sample, explain) {
+  classify: function classify(sample, explain) {
     var trainset = _.map(this.dataset, function (value) {
       return {
         'input': this.complement(value['input']),
@@ -114,7 +117,7 @@ kNN.prototype = {
       'explanation': this.translatetrain(knn)
     };
   },
-  translatetrain: function (input) {
+  translatetrain: function translatetrain(input) {
     if (this.featureLookupTable) {
       _.each(input, function (value, key, list) {
         input[key]['input'] = this.translaterow(value['input']);
@@ -123,7 +126,7 @@ kNN.prototype = {
       return input;
     } else return input;
   },
-  translaterow: function (row) {
+  translaterow: function translaterow(row) {
     var output = {};
 
     _.each(row, function (value, key, list) {
@@ -132,7 +135,7 @@ kNN.prototype = {
 
     return output;
   },
-  complement: function (input) {
+  complement: function complement(input) {
     var len = this.featureLookupTable['featureIndexToFeatureName'].length;
 
     _(len - input.length).times(function (n) {
@@ -141,13 +144,13 @@ kNN.prototype = {
 
     return input;
   },
-  getAllClasses: function () {},
-  stringifyClass: function (aClass) {
+  getAllClasses: function getAllClasses() {},
+  stringifyClass: function stringifyClass(aClass) {
     return _(aClass).isString() ? aClass : JSON.stringify(aClass);
   },
-  toJSON: function () {},
-  fromJSON: function (json) {},
-  setFeatureLookupTable: function (featureLookupTable) {
+  toJSON: function toJSON() {},
+  fromJSON: function fromJSON(json) {},
+  setFeatureLookupTable: function setFeatureLookupTable(featureLookupTable) {
     this.featureLookupTable = featureLookupTable;
   }
 };

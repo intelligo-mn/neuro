@@ -1,7 +1,7 @@
 {
   "name": "neuro.js",
   "description": "Machine learning for Nodejs.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
     "graph-paths": "latest",
     "intelligo": "1.0.16",
     "languagemodel": "latest",
-    "sprintf": "0.1.5",
+    "sprintf": "0.1.5",     
     "svm": "0.1.1",
     "temp": "0.9.0",
     "underscore": "1.9.1",

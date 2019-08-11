@@ -1,3 +1,5 @@
+"use strict";
+
 var hash = require("../../utils/hash");
 
 var sprintf = require("sprintf").sprintf;
@@ -22,7 +24,7 @@ var _ = require("underscore")._;
  */
 
 
-var MetaLabeler = function (opts) {
+var MetaLabeler = function MetaLabeler(opts) {
   if (!opts.rankerType) {
     console.dir(opts);
     throw new Error("opts.rankerType not found");
@@ -44,7 +46,7 @@ MetaLabeler.prototype = {
    * @param sample  a document.
    * @param labels an array whose VALUES are classes.
    */
-  trainOnline: function (sample, labels) {
+  trainOnline: function trainOnline(sample, labels) {
     // The ranker is just trained by the given set of relevant labels:
     this.ranker.trainOnline(sample, labels); // The counter is trained by the *number* of relevant labels:
 
@@ -59,7 +61,7 @@ MetaLabeler.prototype = {
    *            an array with objects of the format: 
    *            {input: sample1, output: [class11, class12...]}
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     // The ranker is just trained by the given set of labels relevant to each sample:
     this.ranker.trainBatch(dataset); // The counter is trained by the *number* of labels relevant to each sample:
 
@@ -81,7 +83,7 @@ MetaLabeler.prototype = {
    *  
    * @return an array whose VALUES are classes.
    */
-  classify: function (sample, explain) {
+  classify: function classify(sample, explain) {
     var rankedLabelsWithExplain = this.ranker.classify(sample, explain,
     /*withScores=*/
     true);
@@ -105,16 +107,16 @@ MetaLabeler.prototype = {
       }
     } : positiveLabels;
   },
-  getAllClasses: function () {
+  getAllClasses: function getAllClasses() {
     return this.ranker.getAllClasses();
   },
-  toJSON: function () {},
-  fromJSON: function (json) {},
+  toJSON: function toJSON() {},
+  fromJSON: function fromJSON(json) {},
 
   /**
    * Link to a FeatureLookupTable from a higher level in the hierarchy (typically from an EnhancedClassifier), used ONLY for generating meaningful explanations. 
    */
-  setFeatureLookupTable: function (featureLookupTable) {
+  setFeatureLookupTable: function setFeatureLookupTable(featureLookupTable) {
     if (this.ranker.setFeatureLookupTable) this.ranker.setFeatureLookupTable(featureLookupTable);
     if (this.counter.setFeatureLookupTable) this.counter.setFeatureLookupTable(featureLookupTable);
   }

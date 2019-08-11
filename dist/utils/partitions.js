@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Utilities for partitioning datasets of documents for training and testing.
  * 

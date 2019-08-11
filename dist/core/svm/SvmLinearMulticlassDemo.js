@@ -1,3 +1,5 @@
+"use strict";
+
 // simple demonstration of multiclass SVM, based on LibLinear
 var SvmLinear = require('./SvmLinear');
 

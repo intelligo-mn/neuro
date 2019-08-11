@@ -1,13 +1,15 @@
-/**
- * LowerCaseNormalizer - normalizes sentences by converting them to lower-case.
- *
- * @author Erel Segal-haLevi
- * @since 2013-08
- */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = _default;
 
 /**
  * Normalizes a sentence by converting it to lower case.
  */
-module.exports = function (sample) {
+function _default(sample) {
   return sample.toLowerCase();
-};
+}
+
+;

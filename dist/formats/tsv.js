@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Small utility for writing a dataset in tab-separated-values format.
  *

@@ -1,13 +1,15 @@
+"use strict";
+
 var _ = require("underscore")._;
 
-var MemoryBackend = function () {
+var MemoryBackend = function MemoryBackend() {
   this.catCounts = {};
   this.wordCounts = {};
 };
 
 MemoryBackend.prototype = {
   async: false,
-  incCounts: function (catIncs, wordIncs) {
+  incCounts: function incCounts(catIncs, wordIncs) {
     _(catIncs).each(function (inc, cat) {
       this.catCounts[cat] = this.catCounts[cat] + inc || inc;
     }, this);
@@ -20,19 +22,19 @@ MemoryBackend.prototype = {
       }, this);
     }, this);
   },
-  getCats: function () {
+  getCats: function getCats() {
     return this.catCounts;
   },
-  getWordCounts: function (words, cats) {
+  getWordCounts: function getWordCounts(words, cats) {
     return this.wordCounts;
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     return {
       cats: this.catCounts,
       words: this.wordCounts
     };
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.catCounts = json.cats;
     this.wordCounts = json.words;
   }

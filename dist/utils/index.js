@@ -1,3 +1,5 @@
+"use strict";
+
 var trainAndTest = require("./trainAndTest");
 
 module.exports = {

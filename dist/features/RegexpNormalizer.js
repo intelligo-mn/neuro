@@ -1,11 +1,9 @@
-/**
- * RegexpNormalizer - normalizes sentences using a custom regular expression file.
- *
- * A normalization rule is described by two regular expressions: 'source' and 'target'.
- *
- * @author Erel Segal-haLevi
- * @since 2013-07
- */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = _default;
 
 /**
  * normalizes a sentence based on a list of regular expressions.
@@ -13,7 +11,7 @@
  * @param sample - a string.
  * @return a new string, with all normalizations carried out.
  */
-module.exports = function (normalizations) {
+function _default(normalizations) {
   return function (sample) {
     normalizations.forEach(function (normalization) {
       var matches = null;
@@ -31,4 +29,6 @@ module.exports = function (normalizations) {
     });
     return sample;
   };
-};
+}
+
+;

@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Utilities common to SVM wrappers
  */

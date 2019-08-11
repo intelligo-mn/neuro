@@ -1,3 +1,5 @@
+"use strict";
+
 // simple demonstration of binary SVM, based on LibLinear
 var SvmLinear = require('./SvmLinear');
 

@@ -1,3 +1,5 @@
+"use strict";
+
 /** 
  *
  * Calculate Hamming distance between two sets 
@@ -8,7 +10,7 @@
  * @param a, b - arrays
  * @return number of elements in a-b plus number of elements in b-a
  */
-var hammingDistance = function (a, b) {
+var hammingDistance = function hammingDistance(a, b) {
   var d = 0;
 
   for (var i = 0; i < a.length; ++i) {

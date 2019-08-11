@@ -1,3 +1,5 @@
+"use strict";
+
 var hash = require("../../utils/hash");
 
 var sprintf = require("sprintf").sprintf;
@@ -21,7 +23,7 @@ var ftrs = require('../../features');
  */
 
 
-var BinarySegmentation = function (opts) {
+var BinarySegmentation = function BinarySegmentation(opts) {
   if (!('binaryClassifierType' in opts)) {
     console.dir(opts);
     throw new Error("opts must contain binaryClassifierType");
@@ -63,7 +65,7 @@ BinarySegmentation.prototype = {
    * @param classes
    *            an object whose KEYS are classes, or an array whose VALUES are classes.
    */
-  trainOnline: function (sample, classes) {
+  trainOnline: function trainOnline(sample, classes) {
     sample = this.sampleToFeatures(sample, this.featureExtractors);
     classes = hash.normalized(classes);
 
@@ -84,7 +86,7 @@ BinarySegmentation.prototype = {
    *            an array with objects of the format: 
    *            {input: sample1, output: [class11, class12...]}
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     // add ['start'] and ['end'] as a try to resolve Append:previous FP
     _.map(dataset, function (num) {
       num['input'] = "['start'] " + num['input'] + " ['end']";
@@ -102,7 +104,7 @@ BinarySegmentation.prototype = {
    *  
    * @return an array whose VALUES are classes.
    */
-  classifySegment: function (segment, explain) {
+  classifySegment: function classifySegment(segment, explain) {
     var classification = this.classifier.classify(segment, explain, true); // console.log(classification)
     // if (classification.classes.length != 0)
 
@@ -133,7 +135,7 @@ BinarySegmentation.prototype = {
    *  
    * @return an array [the_best_class, and_its_probability].
    */
-  bestClassOfSegment: function (segment, explain) {
+  bestClassOfSegment: function bestClassOfSegment(segment, explain) {
     var classes = this.classifySegment(segment, explain);
 
     if (classes.classes.length == 0) {
@@ -152,9 +154,9 @@ BinarySegmentation.prototype = {
    * Strategy of finding the cheapest segmentation (- most probable segmentation), using a dynamic programming algorithm.
    * Based on: 
    * Morbini Fabrizio, Sagae Kenji. Joint Identification and Segmentation of Domain-Specific Dialogue Acts for Conversational Dialogue Systems. ACL-HLT 2011
-  	 * http://www.citeulike.org/user/erelsegal-halevi/article/10259046
+   * http://www.citeulike.org/user/erelsegal-halevi/article/10259046
    */
-  cheapestSegmentSplitStrategy: function (words, accumulatedClasses, explain, explanations) {
+  cheapestSegmentSplitStrategy: function cheapestSegmentSplitStrategy(words, accumulatedClasses, explain, explanations) {
     //for (var start=0; start<=words.length; ++start) {
     //	for (var end=start+1; end<=words.length; ++end) {
     //		var segment = words.slice(start,end).join(" ");
@@ -206,7 +208,7 @@ BinarySegmentation.prototype = {
    * protected function:
    * Strategy of classifying the shortest segments with a single class.
    */
-  shortestSegmentSplitStrategy: function (words, accumulatedClasses, explain, explanations) {
+  shortestSegmentSplitStrategy: function shortestSegmentSplitStrategy(words, accumulatedClasses, explain, explanations) {
     var currentStart = 0;
 
     for (var currentEnd = 1; currentEnd <= words.length; ++currentEnd) {
@@ -233,7 +235,7 @@ BinarySegmentation.prototype = {
    * protected function:
    * Strategy of classifying the longest segments with a single class.
    */
-  longestSegmentSplitStrategy: function (words, accumulatedClasses, explain, explanations) {
+  longestSegmentSplitStrategy: function longestSegmentSplitStrategy(words, accumulatedClasses, explain, explanations) {
     var currentStart = 0;
     var segment = null;
     var segmentClassesWithExplain = null;
@@ -265,7 +267,9 @@ BinarySegmentation.prototype = {
     } // add the classes of the last section:
 
 
-    for (var i in segmentClasses) accumulatedClasses[segmentClasses[i]] = true;
+    for (var i in segmentClasses) {
+      accumulatedClasses[segmentClasses[i]] = true;
+    }
 
     if (explain > 0) {
       explanations.push(segment);
@@ -287,7 +291,7 @@ BinarySegmentation.prototype = {
    *  
    * @return an array whose VALUES are classes.
    */
-  classify: function (sentence, explain) {
+  classify: function classify(sentence, explain) {
     // sentence = "['start'] " + sentence + " ['end']"
     var minWordsToSplit = 2;
     var words = sentence.split(/ /); // var words = tokenizer.tokenize(sentence);
@@ -319,7 +323,7 @@ BinarySegmentation.prototype = {
       // return {classes: classification.classes[0]}
     }
   },
-  toJSON: function (callback) {
+  toJSON: function toJSON(callback) {
     var result = {};
 
     for (var aClass in this.mapClassnameToClassifier) {
@@ -337,13 +341,13 @@ BinarySegmentation.prototype = {
 
     return result;
   },
-  fromJSON: function (json, callback) {
+  fromJSON: function fromJSON(json, callback) {
     for (var aClass in json) {
       this.mapClassnameToClassifier[aClass] = new this.binaryClassifierType();
       this.mapClassnameToClassifier[aClass].fromJSON(json[aClass]);
     }
   },
-  setFeatureLookupTable: function (featureLookupTable) {
+  setFeatureLookupTable: function setFeatureLookupTable(featureLookupTable) {
     if (featureLookupTable) // this.featureLookupTable = featureLookupTable
       if (this.classifier.setFeatureLookupTable) this.classifier.setFeatureLookupTable(featureLookupTable); // for generating clearer explanations only
     // }

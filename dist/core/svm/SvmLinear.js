@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * A wrapper for the LibLinear package, by Fan, Chang, Hsieh, Wang and Lin.
  *
@@ -52,7 +54,7 @@ SvmLinear.isInstalled = function () {
 };
 
 SvmLinear.prototype = {
-  trainOnline: function (features, expected) {
+  trainOnline: function trainOnline(features, expected) {
     throw new Error("LibLinear does not support online training");
   },
 
@@ -61,7 +63,7 @@ SvmLinear.prototype = {
    *
    * @param dataset an array of samples of the form {input: [value1, value2, ...] , output: 0/1}
    */
-  trainBatch: function (dataset) {
+  trainBatch: function trainBatch(dataset) {
     this.timestamp = new Date().getTime() + "_" + process.pid; // check for multilabel
 
     _.each(dataset, function (datum, key, list) {
@@ -105,14 +107,14 @@ SvmLinear.prototype = {
     this.modelFileString = modelFile;
     if (this.debug) console.log("trainBatch end");
   },
-  setModel: function (modelFileString) {
+  setModel: function setModel(modelFileString) {
     // this.modelFileString = modelFileString;
     this.modelString = fs.readFileSync(modelFileString, "utf-8");
     this.mapLabelToMapFeatureToWeight = modelStringToModelMap(this.modelString);
     this.allLabels = Object.keys(this.mapLabelToMapFeatureToWeight);
     if (this.debug) console.dir(this.mapLabelToMapFeatureToWeight);
   },
-  getModelWeights: function () {
+  getModelWeights: function getModelWeights() {
     if (!this.mapLabelToMapFeatureToWeight) this.setModel(this.modelFileString);
     return this.multiclass ? this.mapLabelToMapFeatureToWeight : this.mapLabelToMapFeatureToWeight[1];
   },
@@ -123,7 +125,7 @@ SvmLinear.prototype = {
    * @param continuous_output if true, return the net classification score. If false [default], return 0 or 1.
    * @return the binary classification - 0 or 1.
    */
-  classifyBatch: function (trainset) {
+  classifyBatch: function classifyBatch(trainset) {
     // console.log(JSON.stringify(this.modelFileString, null, 4))
     _.each(trainset, function (value, key, list) {
       trainset[key].output = 0;
@@ -138,7 +140,7 @@ SvmLinear.prototype = {
     var result = fs.readFileSync("/tmp/out_" + this.timestamp, "utf-8").split("\n");
     return result;
   },
-  classify: function (features, explain, continuous_output) {
+  classify: function classify(features, explain, continuous_output) {
     if (!this.mapLabelToMapFeatureToWeight) this.setModel(this.modelFileString);
 
     if (this.allLabels.length == 1) {
@@ -195,13 +197,13 @@ SvmLinear.prototype = {
   /**
    * Link to a FeatureLookupTable from a higher level in the hierarchy (typically from an EnhancedClassifier), used ONLY for generating meaningful explanations.
    */
-  setFeatureLookupTable: function (featureLookupTable) {
+  setFeatureLookupTable: function setFeatureLookupTable(featureLookupTable) {
     this.featureLookupTable = featureLookupTable;
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     return this.mapFeatureToWeight;
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.mapFeatureToWeight = json;
   }
 };

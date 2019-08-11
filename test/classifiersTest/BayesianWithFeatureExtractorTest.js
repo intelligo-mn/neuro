@@ -1,5 +1,5 @@
-var classifiers = require('../../src/core');
-var ftrs = require('../../src/features');
+var classifiers = require('../../dist/core');
+var ftrs = require('../../dist/features');
 
 var UnigramBayesianClassifier = classifiers.EnhancedClassifier.bind(this, {
 	classifierType:   classifiers.Bayesian.bind(this, {

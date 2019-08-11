@@ -1,7 +1,13 @@
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /**
- * FeatureLookupTable - a table for converting features to numbers and vice versa 
+ * FeatureLookupTable - a table for converting features to numbers and vice versa
  */
-var FeatureLookupTable = function () {
+var FeatureLookupTable = function FeatureLookupTable() {
+  _classCallCheck(this, FeatureLookupTable);
+
   this.featureIndexToFeatureName = [undefined];
   this.featureNameToFeatureIndex = {
     undefined: 0
@@ -10,7 +16,7 @@ var FeatureLookupTable = function () {
 
 FeatureLookupTable.prototype = {
   // add a single feature, if it does not exist
-  addFeature: function (feature) {
+  addFeature: function addFeature(feature) {
     if (!(feature in this.featureNameToFeatureIndex)) {
       var newIndex = this.featureIndexToFeatureName.length;
       this.featureIndexToFeatureName.push(feature);
@@ -18,26 +24,32 @@ FeatureLookupTable.prototype = {
     }
   },
   // add all features in the given hash or array
-  addFeatures: function (hash) {
+  addFeatures: function addFeatures(hash) {
     if (hash instanceof Array) {
-      for (var index in hash) this.addFeature(hash[index]);
+      for (var index in hash) {
+        this.addFeature(hash[index]);
+      }
     } else if (hash instanceof Object) {
-      for (var feature in hash) this.addFeature(feature);
+      for (var feature in hash) {
+        this.addFeature(feature);
+      }
     } else throw new Error("FeatureLookupTable.addFeatures expects a hash or an array, but got: " + JSON.stringify(hash));
   },
   // add all features in all hashes in the given array
-  addFeaturess: function (hashes) {
-    for (var i = 0; i < hashes.length; ++i) this.addFeatures(hashes[i]);
+  addFeaturess: function addFeaturess(hashes) {
+    for (var i = 0; i < hashes.length; ++i) {
+      this.addFeatures(hashes[i]);
+    }
   },
 
   /**
    * Convert the given feature to a numeric index.
    */
-  featureToNumber: function (feature) {
+  featureToNumber: function featureToNumber(feature) {
     this.addFeature(feature);
     return this.featureNameToFeatureIndex[feature];
   },
-  numberToFeature: function (number) {
+  numberToFeature: function numberToFeature(number) {
     return this.featureIndexToFeatureName[number];
   },
 
@@ -48,16 +60,22 @@ FeatureLookupTable.prototype = {
    * @return a matching array, based on the current feature table. For example: [0, 111, 222, 0, 333]
    * @note some code borrowed from Heather Arthur: https://github.com/harthur/brain/blob/master/lib/lookup.js
    */
-  hashToArray: function (hash) {
+  hashToArray: function hashToArray(hash) {
     this.addFeatures(hash);
     var array = [];
 
-    for (var featureIndex = 0; featureIndex < this.featureIndexToFeatureName.length; ++featureIndex) array[featureIndex] = 0;
+    for (var featureIndex = 0; featureIndex < this.featureIndexToFeatureName.length; ++featureIndex) {
+      array[featureIndex] = 0;
+    }
 
     if (hash instanceof Array) {
-      for (var i in hash) array[this.featureNameToFeatureIndex[hash[i]]] = true;
+      for (var i in hash) {
+        array[this.featureNameToFeatureIndex[hash[i]]] = true;
+      }
     } else if (hash instanceof Object) {
-      for (var feature in hash) array[this.featureNameToFeatureIndex[feature]] = hash[feature];
+      for (var feature in hash) {
+        array[this.featureNameToFeatureIndex[feature]] = hash[feature];
+      }
     } else throw new Error("Unsupported type: " + JSON.stringify(hash));
 
     return array;
@@ -69,14 +87,16 @@ FeatureLookupTable.prototype = {
    * @param hashes an array of hashes, for example, [{a: 111, b: 222}, {a: 11, c: 33}, ...] 
    * @return an array of matching arrays, based on the current feature table. For example: [[111, 222], [11, 0, 33]]
    */
-  hashesToArrays: function (hashes) {
+  hashesToArrays: function hashesToArrays(hashes) {
     this.addFeaturess(hashes);
     var arrays = [];
 
     for (var i = 0; i < hashes.length; ++i) {
       arrays[i] = [];
 
-      for (var feature in this.featureNameToFeatureIndex) arrays[i][this.featureNameToFeatureIndex[feature]] = hashes[i][feature] || 0;
+      for (var feature in this.featureNameToFeatureIndex) {
+        arrays[i][this.featureNameToFeatureIndex[feature]] = hashes[i][feature] || 0;
+      }
     }
 
     return arrays;
@@ -86,7 +106,7 @@ FeatureLookupTable.prototype = {
    * Convert the given numeric array to a hash of features, ignoring zero values.
    * @note some code borrowed from Heather Arthur: https://github.com/harthur/brain/blob/master/lib/lookup.js
    */
-  arrayToHash: function (array) {
+  arrayToHash: function arrayToHash(array) {
     var hash = {};
 
     for (var feature in this.featureNameToFeatureIndex) {
@@ -99,20 +119,22 @@ FeatureLookupTable.prototype = {
   /**
    * Convert the given numeric arrays to array of hashes of features, ignoring zero values.
    */
-  arraysToHashes: function (arrays) {
+  arraysToHashes: function arraysToHashes(arrays) {
     var hashes = [];
 
-    for (var i = 0; i < arrays.length; ++i) hashes[i] = this.arrayToHash(arrays[i]);
+    for (var i = 0; i < arrays.length; ++i) {
+      hashes[i] = this.arrayToHash(arrays[i]);
+    }
 
     return hashes;
   },
-  toJSON: function () {
+  toJSON: function toJSON() {
     return {
       featureIndexToFeatureName: this.featureIndexToFeatureName,
       featureNameToFeatureIndex: this.featureNameToFeatureIndex
     };
   },
-  fromJSON: function (json) {
+  fromJSON: function fromJSON(json) {
     this.featureIndexToFeatureName = json.featureIndexToFeatureName;
     this.featureNameToFeatureIndex = json.featureNameToFeatureIndex;
   }

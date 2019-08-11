@@ -5,7 +5,7 @@
  currently both of them are the copy from different modules
 
 */
-var PrecisionRecall = require('../src/utils/PrecisionRecall');
+var PrecisionRecall = require('../dist/utils/PrecisionRecall');
 
 module.exports = {
 

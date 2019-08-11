@@ -1,3 +1,5 @@
+"use strict";
+
 // simple demonstration of Binary Relevance (one-vs.-all) classifier
 var classifiers = require('..');
 

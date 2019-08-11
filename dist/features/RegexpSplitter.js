@@ -1,9 +1,9 @@
-/**
- * RegexpSplitter - splits sentences using a custom regular expression.
- *
- * @author Erel Segal-haLevi
- * @since 2013-08
- */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = _default;
 
 /**
  * splits sentences using a custom regular expression.
@@ -12,7 +12,7 @@
  * @param text - a string.
  * @return an array of parts (sentences). 
  */
-module.exports = function (regexpString, delimitersToInclude) {
+function _default(regexpString, delimitersToInclude) {
   regexpString = "(" + regexpString + ")"; // to capture the delimiters
 
   var regexp = new RegExp(regexpString, "i");
@@ -37,4 +37,4 @@ module.exports = function (regexpString, delimitersToInclude) {
 
     return normalizedParts;
   };
-};
+}

@@ -1,3 +1,10 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = _default;
+
 /**
  * CollectionOfExtractors - combines the features from several feature extractors. 
  */
@@ -8,13 +15,15 @@
  * @param features an initial hash of features (optional).
  * @return a hash with all features generated from the sample by the different extractors
  */
-module.exports = function (extractors) {
+function _default(extractors) {
   return function (sample, features) {
     for (var i = 0; i < extractors.length; ++i) {
       extractors[i](sample, features);
     }
   };
-}; //var async = require('async');
+}
+
+; //var async = require('async');
 
 /*
 module.exports = function(extractors) {
