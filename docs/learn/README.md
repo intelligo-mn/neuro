@@ -16,9 +16,6 @@ Neuro.js is machine learning framework for building AI assistants and chat-bots.
 
 [![NPM](https://nodei.co/npm/neuro.js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/neuro.js/)
 
-| [Installation][] | [Usage][] | [Contributors][] | [License][] |
-|---|---|---|---|
-
 ## Installation
 
 ```
@@ -206,7 +203,7 @@ Of course you can use any other function as an input normalizer. For example, if
 
 You can also make 'normalizer' an array of several normalizers. These will be executed in the order you include them.
 
-### Feature lookup table - convert custom features to integer features
+### Feature lookup table
 
 This example uses the quadratic SVM implementation [svm.js, by Andrej Karpathy](https://github.com/karpathy/svmjs). 
 This SVM (like most SVM implementations) works with integer features, so we need a way to convert our string-based features to integers.
@@ -273,7 +270,7 @@ microAverage.calculateStats();
 console.log("\n\nMICRO AVERAGE:"); console.dir(microAverage.fullStats());
 ```
 
-## Back-classification (aka Generation)
+## Back-classification
 
 Use this option to get the list of all samples with a given class.
 
