@@ -3,29 +3,31 @@ sidebar: auto
 type: guide
 ---
 
-# Introduction 
-
-Neuro.js is machine learning framework for building AI assistants and chat-bots.
+# neuro.js
 
 [![npm](https://img.shields.io/npm/v/neuro.js.svg?style=plastic)](https://www.npmjs.com/package/neuro.js)
 [![npm](https://img.shields.io/npm/dt/neuro.js.svg?style=plastic)](https://www.npmjs.com/package/neuro.js)
 [![GitHub license](https://img.shields.io/github/license/intelligo-systems/neuro.js.svg)](https://github.com/intelligo-systems/neuro.js/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/intelligo-systems/neuro.js.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fintelligo-systems%2Fintelligo)
 
+## Introduction 
+
+Neuro.js is machine learning framework for building AI assistants and chat-bots.
+
 [![NPM](https://nodei.co/npm/neuro.js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/neuro.js/)
 
 | [Installation][] | [Usage][] | [Contributors][] | [License][] |
 |---|---|---|---|
 
-# Installation
+## Installation
 
 ```
 npm install neuro.js --save
 ```
 
-# Binary Classification
+## Binary Classification
 
-## Batch Learning - learn from an array of input-output pairs:
+### Batch Learning - learn from an array of input-output pairs:
 
 ```js
 var neuro = require('neuro.js');
@@ -41,7 +43,7 @@ colorClassifier.trainBatch([
 console.log(colorClassifier.classify({ r: 1, g: 0.4, b: 0 }));  // 0.99 - almost white
 ```
 
-## Online Learning
+### Online Learning
 ```js
 var birdClassifier = new neuro.classifiers.Winnow({
 	default_positive_weight: 1,
@@ -63,7 +65,7 @@ console.dir(birdClassifier.classify({'wings': 1, 'flight': 0, 'beak': 1, 'chicke
 The "explanation" feature is explained below.
 
 
-## Binding
+### Binding
 
 Using Javascript's binding capabilities, it is possible to create custom classes, which are made of existing classes and pre-specified parameters:
 ```js
@@ -78,7 +80,7 @@ var birdClassifier = new MyWinnow();
 // continue as above
 ```
 
-## Explanations
+### Explanations
 
 Some classifiers can return "explanations" - additional information that explains how the classification result has been derived: 
 
@@ -110,7 +112,7 @@ While for the winnow classifier it returns the relevance (feature-value times fe
 
 WARNING: The internal format of the explanations might change without notice. The explanations should be used for presentation purposes only (and not, for example, for extracting the actual numbers). 
 
-# Multi-Label Classification
+## Multi-Label Classification
 
 In binary classification, the output is 0 or 1;
 
@@ -132,9 +134,9 @@ intentClassifier.trainBatch([
 console.dir(intentClassifier.classify({I:1,want:1,an:1,apple:1,and:1,a:1,banana:1}));  // ['APPLE','BANANA']
 ```
 
-# Feature engineering
+## Feature engineering
 
-## Feature extraction - converting an input sample into feature-value pairs:
+### Feature extraction - converting an input sample into feature-value pairs:
 
 ```js
 // First, define our base classifier type (a multi-label classifier based on winnow):
@@ -179,7 +181,7 @@ neuro.features.HypernymExtractor
 
 You can also make 'featureExtractor' an array of several feature extractors, that will be executed in the order you include them.
 
-## Input Normalization
+### Input Normalization
 
 ```js
 //Initialize a classifier with a feature extractor and a case normalizer:
@@ -204,7 +206,7 @@ Of course you can use any other function as an input normalizer. For example, if
 
 You can also make 'normalizer' an array of several normalizers. These will be executed in the order you include them.
 
-## Feature lookup table - convert custom features to integer features
+### Feature lookup table - convert custom features to integer features
 
 This example uses the quadratic SVM implementation [svm.js, by Andrej Karpathy](https://github.com/karpathy/svmjs). 
 This SVM (like most SVM implementations) works with integer features, so we need a way to convert our string-based features to integers.
@@ -236,7 +238,7 @@ console.dir(intentClassifier.classify("I want an apple and a banana"));  // ['ap
 
 The FeatureLookupTable takes care of the numbers, while you may continue to work with texts! 
 
-# Cross-validation
+## Cross-validation
 
 ```js
 // create a dataset with a lot of input-output pairs:
@@ -271,7 +273,7 @@ microAverage.calculateStats();
 console.log("\n\nMICRO AVERAGE:"); console.dir(microAverage.fullStats());
 ```
 
-## Back-classification
+## Back-classification (aka Generation)
 
 Use this option to get the list of all samples with a given class.
 
@@ -294,6 +296,40 @@ intentClassifier.trainBatch([
 
 console.dir(intentClassifier.backClassify("apl"));  // [ 'I want an apple', 'I really want an apple' ]
 ```
+
+## SVM wrappers
+
+The native svm.js implementation takes a lot of time to train -  quadratic in the number of training samples. 
+There are two common packages that can be trained in time linear in the number of training samples. They are:
+
+* [SVM-Perf](http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html) - by Thorsten Joachims;
+* [LibLinear](http://www.csie.ntu.edu.tw/~cjlin/liblinear) - Fan, Chang, Hsieh, Wang and Lin.
+
+The neuro.js package provides wrappers for these implementations. 
+In order to use the wrappers, you must have the binary file used for training in your path, that is:
+
+* **svm\_perf\_learn** - from [SVM-Perf](http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html).
+* **liblinear\_train** - from [LibLinear](http://www.csie.ntu.edu.tw/~cjlin/liblinear).
+
+Once you have any one of these installed, you can use the corresponding classifier instead of any binary classifier
+used in the previous demos, as long as you have a feature-lookup-table. For example, with SvmPerf:
+
+```js
+var intentClassifier = new neuro.classifiers.EnhancedClassifier({
+	classifierType: neuro.classifiers.multilabel.BinaryRelevance.bind(0, {
+		binaryClassifierType: neuro.classifiers.SvmPerf.bind(0, 	{
+			learn_args: "-c 20.0" 
+		})
+	}),
+	featureExtractor: neuro.features.NGramsOfWords(1),
+	featureLookupTable: new neuro.features.FeatureLookupTable()
+});
+```
+
+and similarly with SvmLinear.
+
+See the files classifiers/svm/SvmPerf.js and classifiers/svm/SvmLinear.js for a documentation of the options.
+
 
 ## Contributors
 
