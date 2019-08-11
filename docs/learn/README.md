@@ -3,14 +3,14 @@ sidebar: auto
 type: guide
 ---
 
+# Introduction 
+
+Neuro.js is machine learning framework for building AI assistants and chat-bots.
+
 [![npm](https://img.shields.io/npm/v/neuro.js.svg?style=plastic)](https://www.npmjs.com/package/neuro.js)
 [![npm](https://img.shields.io/npm/dt/neuro.js.svg?style=plastic)](https://www.npmjs.com/package/neuro.js)
 [![GitHub license](https://img.shields.io/github/license/intelligo-systems/neuro.js.svg)](https://github.com/intelligo-systems/neuro.js/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/intelligo-systems/neuro.js.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fintelligo-systems%2Fintelligo)
-
-# Introduction 
-
-Machine learning for Node.js
 
 [![NPM](https://nodei.co/npm/neuro.js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/neuro.js/)
 
