@@ -6,7 +6,7 @@ tagline: Neuro.js is machine learning framework for building AI assistants and c
 actionText: Get Started →
 actionLink: /learn/
 features:
-- title: Machine learning with Javascript
+- title: ML with Javascript
   details: Neuro is a library for developing and training ML models in JavaScript, and deploying in browser or on Node.js
 - title: Feature
   details: It supports Multi label classification, online learning, real-time classification.
