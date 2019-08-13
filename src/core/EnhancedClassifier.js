@@ -2,11 +2,24 @@
 TODO: SpellChecker should be reorganized
 */
 
-var ftrs = require('../features');
-var _ = require('underscore')._;
-var hash = require('../utils/hash');
-var util = require('../utils/list');
-var multilabelutils = require('./multilabel/multilabelutils');
+import {
+	normalize,
+	CollectionOfExtractors
+} from '../features';
+import _, {
+	isArray,
+	forEach,
+	compact,
+	flattenDeep,
+	map
+} from 'lodash';
+import hash from '../utils/hash';
+import {
+	clonedataset
+} from '../utils/list';
+import {
+	normalizeOutputLabels
+} from './multilabel/multilabelutils';
 
 /**
  * EnhancedClassifier - wraps any classifier with feature-extractors and feature-lookup-tables.
@@ -67,7 +80,7 @@ class EnhancedClassifier {
 	}
 
 	setFeatureExtractor(featureExtractor) {
-		this.featureExtractors = ftrs.normalize(featureExtractor);
+		this.featureExtractors = normalize(featureExtractor);
 	}
 
 	/** Set the main feature extractor, used for both training and classification. */
@@ -84,7 +97,7 @@ class EnhancedClassifier {
 			} else {
 				featureExtractorForClassification = [this.featureExtractors, featureExtractorForClassification];
 			}
-			this.featureExtractorsForClassification = new ftrs.CollectionOfExtractors(featureExtractorForClassification);
+			this.featureExtractorsForClassification = new CollectionOfExtractors(featureExtractorForClassification);
 		}
 	}
 
@@ -106,7 +119,7 @@ class EnhancedClassifier {
 
 	// private function: use this.normalizers to normalize the given sample:
 	normalizedSample(sample) {
-		if (!(_.isArray(sample))) {
+		if (!(isArray(sample))) {
 			if (this.normalizers) {
 				try {
 					for (var i in this.normalizers) {
@@ -144,10 +157,10 @@ class EnhancedClassifier {
 	trainSpellChecker(features) {
 		if (this.spellChecker) {
 			var tokens = this.tokenizer.tokenize(features);
-			_.each(tokens, function (word, key, list) {
+			forEach(tokens, (word, key, list) => {
 				this.spellChecker[1].understand(word); // Adds the given word to the index of the spell-checker.
 				this.spellChecker[1].train(word);
-			}, this)
+			})
 		}
 	}
 
@@ -261,7 +274,7 @@ class EnhancedClassifier {
 		dataset = dataset.map(function (datum) {
 
 			if (typeof this.InputSplitLabel === 'function') {
-				datum.output = (this.InputSplitLabel(multilabelutils.normalizeOutputLabels(datum.output)))
+				datum.output = (this.InputSplitLabel(normalizeOutputLabels(datum.output)))
 			} else {
 				datum.output = normalizeClasses(datum.output, this.labelLookupTable);
 			}
@@ -290,7 +303,7 @@ class EnhancedClassifier {
 			return datum;
 		}, this);
 
-		dataset = _.compact(dataset)
+		dataset = compact(dataset)
 
 		dataset.forEach(function (datum) {
 			// run on single sentence
@@ -325,9 +338,9 @@ class EnhancedClassifier {
 	}
 
 	outputToFormat(data) {
-		dataset = util.clonedataset(data)
+		dataset = clonedataset(data)
 		dataset = dataset.map(function (datum) {
-			var normalizedLabels = multilabelutils.normalizeOutputLabels(datum.output);
+			var normalizedLabels = normalizeOutputLabels(datum.output);
 			return {
 				input: datum.input,
 				output: this.TestSplitLabel(normalizedLabels)
@@ -384,10 +397,10 @@ class EnhancedClassifier {
 			if (accumulatedClasses[0]) {
 				if (accumulatedClasses[0][0] instanceof Array)
 					_(accumulatedClasses[0].length).times(function (n) {
-						classes.push(_.flatten(_.pluck(accumulatedClasses, n)))
+						classes.push(flattenDeep(map(accumulatedClasses, n)))
 					});
 				else {
-					classes = _.flatten(accumulatedClasses)
+					classes = flattenDeep(accumulatedClasses)
 				}
 			}
 		}
@@ -395,7 +408,7 @@ class EnhancedClassifier {
 		if (this.labelLookupTable) {
 			if (Array.isArray(classes)) {
 				classes = classes.map(function (label) {
-					if (_.isArray(label))
+					if (isArray(label))
 						label[0] = this.labelLookupTable.numberToFeature(label[0]);
 					else
 						label = this.labelLookupTable.numberToFeature(label);
@@ -415,10 +428,10 @@ class EnhancedClassifier {
 
 			if ((explain > 0) && (this.inputSplitter)) {
 				nclasses = []
-				_(explanations.length).times(function (n) {
+				_(explanations.length).times(n => {
 					var clas = this.OutputSplitLabel(classes, this, parts[n], explanations[n], original, classifier_compare, initial)
 					nclasses = nclasses.concat(clas)
-				}, this)
+				})
 				classes = nclasses
 			} else {
 				var classes = this.OutputSplitLabel(classes, this, sample, explanations, original, classifier_compare, initial)
@@ -501,9 +514,6 @@ class EnhancedClassifier {
 	}
 }
 
-
-
-
 var stringifyClass = function (aClass) {
 	return (_(aClass).isString() ? aClass : JSON.stringify(aClass));
 }
@@ -518,4 +528,4 @@ var normalizeClasses = function (classes, labelLookupTable) {
 	return classes;
 }
 
-module.exports = EnhancedClassifier;
+export default EnhancedClassifier;

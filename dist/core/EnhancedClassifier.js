@@ -1,23 +1,30 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _features = require("../features");
+
+var _lodash = _interopRequireWildcard(require("lodash"));
+
+var _hash = _interopRequireDefault(require("../utils/hash"));
+
+var _list = require("../utils/list");
+
+var _multilabelutils = require("./multilabel/multilabelutils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/*
-TODO: SpellChecker should be reorganized
-*/
-var ftrs = require('../features');
-
-var _ = require('underscore')._;
-
-var hash = require('../utils/hash');
-
-var util = require('../utils/list');
-
-var multilabelutils = require('./multilabel/multilabelutils');
 /**
  * EnhancedClassifier - wraps any classifier with feature-extractors and feature-lookup-tables.
  *
@@ -43,8 +50,6 @@ var multilabelutils = require('./multilabel/multilabelutils');
  * * 'instanceFilter' - filter of instance of training data and test data, if training instance is filtered is not used for training, if triaging instance is filtered by classify,
  it's classified empty class.
 */
-
-
 var EnhancedClassifier =
 /*#__PURE__*/
 function () {
@@ -88,7 +93,7 @@ function () {
   _createClass(EnhancedClassifier, [{
     key: "setFeatureExtractor",
     value: function setFeatureExtractor(featureExtractor) {
-      this.featureExtractors = ftrs.normalize(featureExtractor);
+      this.featureExtractors = (0, _features.normalize)(featureExtractor);
     }
     /** Set the main feature extractor, used for both training and classification. */
 
@@ -109,7 +114,7 @@ function () {
           featureExtractorForClassification = [this.featureExtractors, featureExtractorForClassification];
         }
 
-        this.featureExtractorsForClassification = new ftrs.CollectionOfExtractors(featureExtractorForClassification);
+        this.featureExtractorsForClassification = new _features.CollectionOfExtractors(featureExtractorForClassification);
       }
     }
   }, {
@@ -132,7 +137,7 @@ function () {
   }, {
     key: "normalizedSample",
     value: function normalizedSample(sample) {
-      if (!_.isArray(sample)) {
+      if (!(0, _lodash.isArray)(sample)) {
         if (this.normalizers) {
           try {
             for (var i in this.normalizers) {
@@ -171,14 +176,16 @@ function () {
   }, {
     key: "trainSpellChecker",
     value: function trainSpellChecker(features) {
+      var _this = this;
+
       if (this.spellChecker) {
         var tokens = this.tokenizer.tokenize(features);
+        (0, _lodash.forEach)(tokens, function (word, key, list) {
+          _this.spellChecker[1].understand(word); // Adds the given word to the index of the spell-checker.
 
-        _.each(tokens, function (word, key, list) {
-          this.spellChecker[1].understand(word); // Adds the given word to the index of the spell-checker.
 
-          this.spellChecker[1].train(word);
-        }, this);
+          _this.spellChecker[1].train(word);
+        });
       }
     }
   }, {
@@ -299,13 +306,13 @@ function () {
 
       dataset = dataset.map(function (datum) {
         if (typeof this.InputSplitLabel === 'function') {
-          datum.output = this.InputSplitLabel(multilabelutils.normalizeOutputLabels(datum.output));
+          datum.output = this.InputSplitLabel((0, _multilabelutils.normalizeOutputLabels)(datum.output));
         } else {
           datum.output = normalizeClasses(datum.output, this.labelLookupTable);
         }
 
         if (pastTrainingSamples && dataset != pastTrainingSamples) pastTrainingSamples.push(datum);
-        datum = _(datum).clone();
+        datum = (0, _lodash["default"])(datum).clone();
         datum.input = this.normalizedSample(datum.input);
         /*true - this instance is filtered as not useful*/
 
@@ -318,7 +325,7 @@ function () {
         datum.input = features;
         return datum;
       }, this);
-      dataset = _.compact(dataset);
+      dataset = (0, _lodash.compact)(dataset);
       dataset.forEach(function (datum) {
         // run on single sentence
         this.editFeatureValues(datum.input,
@@ -355,9 +362,9 @@ function () {
   }, {
     key: "outputToFormat",
     value: function outputToFormat(data) {
-      dataset = util.clonedataset(data);
+      dataset = (0, _list.clonedataset)(data);
       dataset = dataset.map(function (datum) {
-        var normalizedLabels = multilabelutils.normalizeOutputLabels(datum.output);
+        var normalizedLabels = (0, _multilabelutils.normalizeOutputLabels)(datum.output);
         return {
           input: datum.input,
           output: this.TestSplitLabel(normalizedLabels)
@@ -375,6 +382,8 @@ function () {
   }, {
     key: "classify",
     value: function classify(sample, explain, continuous_output, original, classifier_compare) {
+      var _this2 = this;
+
       var initial = sample;
       sample = this.normalizedSample(sample);
 
@@ -413,10 +422,10 @@ function () {
         classes = [];
 
         if (accumulatedClasses[0]) {
-          if (accumulatedClasses[0][0] instanceof Array) _(accumulatedClasses[0].length).times(function (n) {
-            classes.push(_.flatten(_.pluck(accumulatedClasses, n)));
+          if (accumulatedClasses[0][0] instanceof Array) (0, _lodash["default"])(accumulatedClasses[0].length).times(function (n) {
+            classes.push((0, _lodash.flattenDeep)((0, _lodash.map)(accumulatedClasses, n)));
           });else {
-            classes = _.flatten(accumulatedClasses);
+            classes = (0, _lodash.flattenDeep)(accumulatedClasses);
           }
         }
       }
@@ -424,7 +433,7 @@ function () {
       if (this.labelLookupTable) {
         if (Array.isArray(classes)) {
           classes = classes.map(function (label) {
-            if (_.isArray(label)) label[0] = this.labelLookupTable.numberToFeature(label[0]);else label = this.labelLookupTable.numberToFeature(label);
+            if ((0, _lodash.isArray)(label)) label[0] = this.labelLookupTable.numberToFeature(label[0]);else label = this.labelLookupTable.numberToFeature(label);
             return label;
           }, this);
         } else {
@@ -439,12 +448,11 @@ function () {
         // var bonus = []
         if (explain > 0 && this.inputSplitter) {
           nclasses = [];
+          (0, _lodash["default"])(explanations.length).times(function (n) {
+            var clas = _this2.OutputSplitLabel(classes, _this2, parts[n], explanations[n], original, classifier_compare, initial);
 
-          _(explanations.length).times(function (n) {
-            var clas = this.OutputSplitLabel(classes, this, parts[n], explanations[n], original, classifier_compare, initial);
             nclasses = nclasses.concat(clas);
-          }, this);
-
+          });
           classes = nclasses;
         } else {
           var classes = this.OutputSplitLabel(classes, this, sample, explanations, original, classifier_compare, initial);
@@ -481,7 +489,7 @@ function () {
       if (!(theClass instanceof Array)) theClass = [theClass];
       var samples = [];
       this.pastTrainingSamples.forEach(function (datum) {
-        if (_(datum.output).isEqual(theClass)) samples.push(datum.input);
+        if ((0, _lodash["default"])(datum.output).isEqual(theClass)) samples.push(datum.input);
       });
       return samples;
     }
@@ -535,7 +543,7 @@ function () {
 }();
 
 var stringifyClass = function stringifyClass(aClass) {
-  return _(aClass).isString() ? aClass : JSON.stringify(aClass);
+  return (0, _lodash["default"])(aClass).isString() ? aClass : JSON.stringify(aClass);
 };
 
 var normalizeClasses = function normalizeClasses(classes, labelLookupTable) {
@@ -546,4 +554,5 @@ var normalizeClasses = function normalizeClasses(classes, labelLookupTable) {
   return classes;
 };
 
-module.exports = EnhancedClassifier;
+var _default = EnhancedClassifier;
+exports["default"] = _default;
