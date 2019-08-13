@@ -22,4 +22,4 @@ var hammingDistance = function(a,b) {
 	return d;
 };
 
-module.exports = {hammingDistance:  hammingDistance};
+export const hammingDistance = hammingDistance;
