@@ -3,11 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.CollectionOfExtractors = CollectionOfExtractors;
 exports.NGramsFromArray = NGramsFromArray;
 exports.NGramsOfWords = NGramsOfWords;
 exports.call = call;
 exports.normalize = normalize;
-exports.RegexpSplitter = exports.RegexpNormalizer = exports.LowerCaseNormalizer = exports.FeatureLookupTable = exports.CollectionOfExtractors = exports.Hypernyms = exports.NGramsOfLetters = void 0;
+exports.RegexpSplitter = exports.RegexpNormalizer = exports.LowerCaseNormalizer = exports.FeatureLookupTable = exports.Hypernyms = exports.NGramsOfLetters = void 0;
 
 var NGramsOfLetters = require("./NGramsOfLetters");
 
@@ -16,10 +17,6 @@ exports.NGramsOfLetters = NGramsOfLetters;
 var Hypernyms = require("./HypernymExtractor");
 
 exports.Hypernyms = Hypernyms;
-
-var CollectionOfExtractors = require("./CollectionOfExtractors")["default"];
-
-exports.CollectionOfExtractors = CollectionOfExtractors;
 
 var FeatureLookupTable = require("./FeatureLookupTable");
 
@@ -35,11 +32,28 @@ exports.RegexpNormalizer = RegexpNormalizer;
 
 var RegexpSplitter = require("./RegexpSplitter");
 /**
- * Convert an array of words/tokens to a set of n-grams, for a given n, possibly with a gap:
+ * CollectionOfExtractors - combines the features from several feature extractors. 
+ * @param extractors - an array of other feature extractors. 
+ * @param sample - a string.
+ * @param features an initial hash of features (optional).
+ * @return a hash with all features generated from the sample by the different extractors
  */
 
 
 exports.RegexpSplitter = RegexpSplitter;
+
+function CollectionOfExtractors(extractors) {
+  return function (sample, features) {
+    for (var i = 0; i < extractors.length; ++i) {
+      extractors[i](sample, features);
+    }
+  };
+}
+
+;
+/**
+ * Convert an array of words/tokens to a set of n-grams, for a given n, possibly with a gap:
+ */
 
 function NGramsFromArray(numOfWords, gap, grams, features) {
   for (var i = 0; i < numOfWords - 1 - (gap ? 1 : 0); ++i) {

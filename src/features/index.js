@@ -1,10 +1,26 @@
 export const NGramsOfLetters = require("./NGramsOfLetters");
 export const Hypernyms = require("./HypernymExtractor");
-export const CollectionOfExtractors = require("./CollectionOfExtractors").default;
 export const FeatureLookupTable = require("./FeatureLookupTable");
 export const LowerCaseNormalizer = require("./LowerCaseNormalizer");
 export const RegexpNormalizer = require("./RegexpNormalizer");
 export const RegexpSplitter = require("./RegexpSplitter");
+
+/**
+ * CollectionOfExtractors - combines the features from several feature extractors. 
+ * @param extractors - an array of other feature extractors. 
+ * @param sample - a string.
+ * @param features an initial hash of features (optional).
+ * @return a hash with all features generated from the sample by the different extractors
+ */
+export function CollectionOfExtractors(extractors) {
+	return function(sample, features) {
+		for (var i=0; i<extractors.length; ++i){
+			extractors[i](sample, features);
+		}
+	};
+};
+
+
 
 /**
  * Convert an array of words/tokens to a set of n-grams, for a given n, possibly with a gap:
