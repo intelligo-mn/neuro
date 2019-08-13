@@ -1,19 +1,28 @@
 /**
  * a unit-test for feature lookup tables
- * 
- * @author Erel Segal-Halevi
- * @since 2013-08
  */
 
-var should = require('should');
-var FeatureLookupTable = require('../../dist/features/FeatureLookupTable');
+import should from 'should';
+import FeatureLookupTable from '../../dist/features/FeatureLookupTable';
 
-var sample1 = {a: 111, b: 222, c: 333};
-var sample2 = {a: 1111, d: 4444, e: 5555};
-var sample3 = {c: 33333, e: 55555, g: 77777};
+var sample1 = {
+	a: 111,
+	b: 222,
+	c: 333
+};
+var sample2 = {
+	a: 1111,
+	d: 4444,
+	e: 5555
+};
+var sample3 = {
+	c: 33333,
+	e: 55555,
+	g: 77777
+};
 
-describe('feature lookup table', function() {
-	it('adds samples incrementally', function() {
+describe('feature lookup table', function () {
+	it('adds samples incrementally', function () {
 		var table = new FeatureLookupTable();
 		var array1 = table.hashToArray(sample1);
 		var array2 = table.hashToArray(sample2);
@@ -25,8 +34,8 @@ describe('feature lookup table', function() {
 		table.arrayToHash(array2).should.eql(sample2);
 		table.arrayToHash(array3).should.eql(sample3);
 	})
-	
-	it('adds all samples together', function() {
+
+	it('adds all samples together', function () {
 		var table = new FeatureLookupTable();
 		var arrays = table.hashesToArrays([sample1, sample2, sample3]);
 		arrays.should.be.an.instanceOf(Array).and.have.lengthOf(3);

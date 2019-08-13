@@ -1,11 +1,11 @@
-var classifiers = require('../../dist/core');
-var ftrs = require('../../dist/features');
+import { EnhancedClassifier, Bayesian } from '../../dist/core';
+import { NGramsOfWords } from '../../dist/features';
 
-var UnigramBayesianClassifier = classifiers.EnhancedClassifier.bind(this, {
-	classifierType:   classifiers.Bayesian.bind(this, {
+var UnigramBayesianClassifier = EnhancedClassifier.bind(this, {
+	classifierType:   Bayesian.bind(this, {
 		globalThreshold:  1.5
 	}),
-	featureExtractor: ftrs.NGramsOfWords(1),
+	featureExtractor: NGramsOfWords(1),
 });
 
 describe('bayesian classifier with a single feature extractor for words', function() {

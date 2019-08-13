@@ -1,21 +1,21 @@
 #!mocha
+
 /**
  * a unit-test for Multi-Label classification
- *
- * @author Erel Segal-Halevi
- * @since 2013-08
  */
 
-var should = require('should');
-var mlutils = require('../../dist/utils');
+import should from 'should';
+import {
+	hammingDistance
+} from '../../dist/utils';
 
-describe('Hamming distance', function() {
-	it('calculates hamming distance', function() {
-		mlutils.hammingDistance([],[]).should.equal(0);
-		mlutils.hammingDistance(['a'],[]).should.equal(1);
-		mlutils.hammingDistance([],['a']).should.equal(1);
-		mlutils.hammingDistance(['a'],['a']).should.equal(0);
-		mlutils.hammingDistance(['a'],['b']).should.equal(2);
-		mlutils.hammingDistance(['a','b'],['b','c']).should.equal(2);
+describe('Hamming distance', function () {
+	it('calculates hamming distance', function () {
+		hammingDistance([], []).should.equal(0);
+		hammingDistance(['a'], []).should.equal(1);
+		hammingDistance([], ['a']).should.equal(1);
+		hammingDistance(['a'], ['a']).should.equal(0);
+		hammingDistance(['a'], ['b']).should.equal(2);
+		hammingDistance(['a', 'b'], ['b', 'c']).should.equal(2);
 	})
 })
