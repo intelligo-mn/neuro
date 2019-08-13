@@ -1,5 +1,3 @@
-export const NGramsFromArray = require("./NGramsFromArray");
-export const NGramsOfWords = require("./NGramsOfWords");
 export const NGramsOfLetters = require("./NGramsOfLetters");
 export const Hypernyms = require("./HypernymExtractor");
 export const CollectionOfExtractors = require("./CollectionOfExtractors").default;
@@ -7,6 +5,36 @@ export const FeatureLookupTable = require("./FeatureLookupTable");
 export const LowerCaseNormalizer = require("./LowerCaseNormalizer");
 export const RegexpNormalizer = require("./RegexpNormalizer");
 export const RegexpSplitter = require("./RegexpSplitter");
+
+/**
+ * Convert an array of words/tokens to a set of n-grams, for a given n, possibly with a gap:
+ */
+export function NGramsFromArray(numOfWords, gap, grams, features) {
+	for (var i = 0; i < numOfWords - 1 - (gap ? 1 : 0); ++i) {
+		grams.unshift("[start]");
+		grams.push("[end]");
+	}
+	for (var i = 0; i <= grams.length - numOfWords; ++i) {
+		let sliceOfWords = grams.slice(i, i + numOfWords);
+		if (gap) sliceOfWords[1] = "-";
+		let feature = sliceOfWords.join(" ");
+		features[feature.trim()] = 1;
+	}
+	for (var i = 0; i < numOfWords - 1 - (gap ? 1 : 0); ++i) {
+		grams.pop();
+		grams.shift();
+	}
+}
+
+export function NGramsOfWords(numOfWords, gap) {
+	return function (sample, features) {
+		var words = sample.split(/[ \t,;:.!?]/).filter(function (a) {
+			return !!a
+		}); // all non-empty words
+		NGramsFromArray(numOfWords, gap, words, features);
+	};
+}
+
 
 /**
  * Call the given featureExtractor on the given sample, and return the result.

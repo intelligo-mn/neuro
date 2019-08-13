@@ -1,5 +1,10 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hammingDistance = hammingDistance;
+
 /** 
  *
  * Calculate Hamming distance between two sets 
@@ -10,7 +15,7 @@
  * @param a, b - arrays
  * @return number of elements in a-b plus number of elements in b-a
  */
-var hammingDistance = function hammingDistance(a, b) {
+function hammingDistance(a, b) {
   var d = 0;
 
   for (var i = 0; i < a.length; ++i) {
@@ -22,8 +27,4 @@ var hammingDistance = function hammingDistance(a, b) {
   }
 
   return d;
-};
-
-module.exports = {
-  hammingDistance: hammingDistance
-};
+}
