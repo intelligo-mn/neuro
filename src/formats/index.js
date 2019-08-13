@@ -1,6 +1,4 @@
-module.exports = {
-	arff: require("./arff"),
-	json: require("./json"),
-	tsv: require("./tsv"),
-	svmlight: require("./svmlight"),
-};
+export const arff = require("./arff");
+export const json = require("./json");
+export const tsv = require("./tsv");
+export const svmlight = require("./svmlight");
