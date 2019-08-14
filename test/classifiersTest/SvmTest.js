@@ -2,148 +2,161 @@
  * a unit-test for SvmLinear classifier (a wrapper for LibLinear) and SvmPerf classifier.
  */
 
-import should from 'should';
-import {
-	EnhancedClassifier,
-	SvmPerf,
-	SvmLinear
-} from '../../dist/core';
-import {
-	FeatureLookupTable
-} from '../../dist/features';
+import { EnhancedClassifier, SvmLinear, SvmPerf } from "../../dist/core";
+import { FeatureLookupTable } from "../../dist/features";
 
 function test(name, SvmClassifier) {
-	describe(name + ' with numeric features', function () {
-		var trainSet = [{
-				input: [0, 0],
-				output: 0
-			},
-			{
-				input: [1, 1],
-				output: 0
-			},
-			{
-				input: [0, 1],
-				output: 1
-			},
-			{
-				input: [1, 2],
-				output: 1
-			}
-		];
+  describe(name + " with numeric features", function() {
+    var trainSet = [
+      {
+        input: [0, 0],
+        output: 0
+      },
+      {
+        input: [1, 1],
+        output: 0
+      },
+      {
+        input: [0, 1],
+        output: 1
+      },
+      {
+        input: [1, 2],
+        output: 1
+      }
+    ];
 
-		var classifier = new SvmClassifier();
-		classifier.trainBatch(trainSet);
+    var classifier = new SvmClassifier();
+    classifier.trainBatch(trainSet);
 
-		it('finds the maximal margin separator', function () {
-			// the max-margin separating line goes through [0,0.5] and [1,1.5]. It is:
-			//        0.5+x-y = 0
-			//  or:   2y-2x-1 = 0
-			//classifier.modelMap.should.eql({ '0': -1, '1': -2, '2': 2 });  // the LibLinear algorithm is not accurate:
-			var modelWeights = classifier.getModelWeights();
+    it("finds the maximal margin separator", function() {
+      // the max-margin separating line goes through [0,0.5] and [1,1.5]. It is:
+      //        0.5+x-y = 0
+      //  or:   2y-2x-1 = 0
+      //classifier.modelMap.should.eql({ '0': -1, '1': -2, '2': 2 });  // the LibLinear algorithm is not accurate:
+      var modelWeights = classifier.getModelWeights();
 
-			modelWeights[0].should.be.within(-1.5, -0.5);
-			modelWeights[1].should.be.within(-2.5, -1.5);
-			modelWeights[2].should.be.within(1.5, 2.5);
-		})
+      modelWeights[0].should.be.within(-1.5, -0.5);
+      modelWeights[1].should.be.within(-2.5, -1.5);
+      modelWeights[2].should.be.within(1.5, 2.5);
+    });
 
+    it("supports binary output", function() {
+      classifier.classify([0, 2]).should.eql(1);
+      classifier.classify([1, 0]).should.eql(0);
+    });
 
-		it('supports binary output', function () {
-			classifier.classify([0, 2]).should.eql(1);
-			classifier.classify([1, 0]).should.eql(0);
-		})
+    //		it('explains its decisions', function() {
+    //			classifier.classify([0,2], 2).should.have.property("explanation").with.lengthOf(2);
+    //			classifier.classify([1,0], 3).should.have.property("explanation").with.lengthOf(3);
+    //		})
 
-		//		it('explains its decisions', function() {
-		//			classifier.classify([0,2], 2).should.have.property("explanation").with.lengthOf(2);
-		//			classifier.classify([1,0], 3).should.have.property("explanation").with.lengthOf(3);
-		//		})
+    it("supports continuous output", function() {
+      classifier.classify([0, 2], 0, true).should.be.within(2.5, 3.5); // should equal 3, but it is not accurate enough
+      classifier.classify([1, 0], 0, true).should.be.within(-3.5, -2.5); // should equal -3, but it is not accurate enough
+    });
+  });
 
-		it('supports continuous output', function () {
-			classifier.classify([0, 2], 0, true).should.be.within(2.5, 3.5); // should equal 3, but it is not accurate enough
-			classifier.classify([1, 0], 0, true).should.be.within(-3.5, -2.5); // should equal -3, but it is not accurate enough
-		})
-	})
+  var SvmClassifierStringFeatures = EnhancedClassifier.bind(this, {
+    classifierType: SvmClassifier,
+    featureLookupTable: new FeatureLookupTable()
+  });
 
-	var SvmClassifierStringFeatures = EnhancedClassifier.bind(this, {
-		classifierType: SvmClassifier,
-		featureLookupTable: new FeatureLookupTable()
-	});
+  describe(name + " with string features", function() {
+    var trainSet = [
+      {
+        input: {
+          a: 0,
+          b: 0
+        },
+        output: 0
+      },
+      {
+        input: {
+          a: 1,
+          b: 1
+        },
+        output: 0
+      },
+      {
+        input: {
+          a: 0,
+          b: 1
+        },
+        output: 1
+      },
+      {
+        input: {
+          a: 1,
+          b: 2
+        },
+        output: 1
+      }
+    ];
 
-	describe(name + ' with string features', function () {
-		var trainSet = [{
-				input: {
-					a: 0,
-					b: 0
-				},
-				output: 0
-			},
-			{
-				input: {
-					a: 1,
-					b: 1
-				},
-				output: 0
-			},
-			{
-				input: {
-					a: 0,
-					b: 1
-				},
-				output: 1
-			},
-			{
-				input: {
-					a: 1,
-					b: 2
-				},
-				output: 1
-			}
-		];
+    var classifier = new SvmClassifierStringFeatures();
+    classifier.trainBatch(trainSet);
 
-		var classifier = new SvmClassifierStringFeatures();
-		classifier.trainBatch(trainSet);
+    it("supports binary output", function() {
+      classifier
+        .classify({
+          a: 0,
+          b: 2
+        })
+        .should.eql(1);
+      classifier
+        .classify({
+          a: 1,
+          b: 0
+        })
+        .should.eql(0);
+    });
 
-		it('supports binary output', function () {
-			classifier.classify({
-				a: 0,
-				b: 2
-			}).should.eql(1);
-			classifier.classify({
-				a: 1,
-				b: 0
-			}).should.eql(0);
-		})
+    //		it('explains its classifications', function() {
+    //			classifier.classify({a:0, b:2}, 2).should.have.property("explanation").with.lengthOf(2);
+    //			classifier.classify({a:1, b:0}, 3).should.have.property("explanation").with.lengthOf(3);
+    //		})
 
-		//		it('explains its classifications', function() {
-		//			classifier.classify({a:0, b:2}, 2).should.have.property("explanation").with.lengthOf(2);
-		//			classifier.classify({a:1, b:0}, 3).should.have.property("explanation").with.lengthOf(3);
-		//		})
-
-		it('supports continuous output', function () {
-			classifier.classify({
-				a: 0,
-				b: 2
-			}, 0, true).should.be.above(0);
-			classifier.classify({
-				a: 1,
-				b: 0
-			}, 0, true).should.be.below(0);
-		})
-	})
+    it("supports continuous output", function() {
+      classifier
+        .classify(
+          {
+            a: 0,
+            b: 2
+          },
+          0,
+          true
+        )
+        .should.be.above(0);
+      classifier
+        .classify(
+          {
+            a: 1,
+            b: 0
+          },
+          0,
+          true
+        )
+        .should.be.below(0);
+    });
+  });
 } // end of function
 
-
 if (SvmPerf.isInstalled())
-	test("SVM-Perf", SvmPerf.bind(this, {
-		learn_args: "-c 20.0"
-	}));
-else
-	console.warn("svm_perf_learn not found - SvmPerf tests skipped.")
+  test(
+    "SVM-Perf",
+    SvmPerf.bind(this, {
+      learn_args: "-c 20.0"
+    })
+  );
+else console.warn("svm_perf_learn not found - SvmPerf tests skipped.");
 
 if (SvmLinear.isInstalled())
-	test("SVM-LibLinear", SvmLinear.bind(this, {
-		learn_args: "-c 20.0",
-		multiclass: false
-	}));
-else
-	console.warn("liblinear_train not found - SvmLinear tests skipped.")
+  test(
+    "SVM-LibLinear",
+    SvmLinear.bind(this, {
+      learn_args: "-c 20.0",
+      multiclass: false
+    })
+  );
+else console.warn("liblinear_train not found - SvmLinear tests skipped.");

@@ -1,58 +1,75 @@
 /**
  * a unit-test for Multi-Label classification in the multiclass segmentation method
- * 
- * @author Erel Segal-Halevi
- * @since 2013-08
  */
 
-var should = require('should');
-var classifiers = require('../../../src/core');
-var ftrs = require('../../../src/features');
-require('../../sorted');
+import { Bayesian, multilabel } from "../../../src/core";
+import { NGramsOfWords } from "../../../src/features";
+import "../../sorted";
 
-var MulticlassSegmentationBayes = classifiers.multilabel.MulticlassSegmentation.bind(this, {
-		multiclassClassifierType: classifiers.Bayesian.bind(this, {
-			calculateRelativeProbabilities: true
-		}),
-		featureExtractor: ftrs.NGramsOfWords(1),
+var MulticlassSegmentationBayes = multilabel.MulticlassSegmentation.bind(this, {
+  multiclassClassifierType: Bayesian.bind(this, {
+    calculateRelativeProbabilities: true
+  }),
+  featureExtractor: NGramsOfWords(1)
 });
 
 // MulticlassSegmentationBayes is now in repair
-describe.skip('Multi-Label MCS Classifier Trained on Single-class inputs', function() {
-	var classifier = new MulticlassSegmentationBayes();
-	classifier.trainBatch([
-		{input: "I want aa", output: 'A'},
-		{input: "I want bb", output: 'B'},
-		{input: "I want cc", output: 'C'},
-	]);
-	
-	it('classifies 1-class samples', function() {
-		classifier.classify("I want aa").should.eql(['A']);
-		classifier.classify("I want bb").should.eql(['B']);
-		classifier.classify("I want cc").should.eql(['C']);
-	});
+describe.skip("Multi-Label MCS Classifier Trained on Single-class inputs", function() {
+  var classifier = new MulticlassSegmentationBayes();
+  classifier.trainBatch([
+    { input: "I want aa", output: "A" },
+    { input: "I want bb", output: "B" },
+    { input: "I want cc", output: "C" }
+  ]);
 
-	it('classifies 2-class samples', function() {
-		classifier.classify("I want aa bb").sorted().should.eql(['A','B']);
-		classifier.classify("I want bb cc").sorted().should.eql(['B','C']);
-		classifier.classify("I want cc aa").sorted().should.eql(['A','C']);
-	});
+  it("classifies 1-class samples", function() {
+    classifier.classify("I want aa").should.eql(["A"]);
+    classifier.classify("I want bb").should.eql(["B"]);
+    classifier.classify("I want cc").should.eql(["C"]);
+  });
 
-	it('classifies 2-class samples with a redundant word', function() {
-		classifier.classify("I want aa and bb").sorted().should.eql(['A','B']);
-		classifier.classify("I want bb and cc").sorted().should.eql(['B','C']);
-		classifier.classify("I want cc and aa").sorted().should.eql(['A','C']);
-	});
+  it("classifies 2-class samples", function() {
+    classifier
+      .classify("I want aa bb")
+      .sorted()
+      .should.eql(["A", "B"]);
+    classifier
+      .classify("I want bb cc")
+      .sorted()
+      .should.eql(["B", "C"]);
+    classifier
+      .classify("I want cc aa")
+      .sorted()
+      .should.eql(["A", "C"]);
+  });
 
-	it('classifies 3-class samples', function() {
-		classifier.classify("I want cc and aa and bb").sorted().should.eql(['A','B','C']);
-	});
+  it("classifies 2-class samples with a redundant word", function() {
+    classifier
+      .classify("I want aa and bb")
+      .sorted()
+      .should.eql(["A", "B"]);
+    classifier
+      .classify("I want bb and cc")
+      .sorted()
+      .should.eql(["B", "C"]);
+    classifier
+      .classify("I want cc and aa")
+      .sorted()
+      .should.eql(["A", "C"]);
+  });
 
-	// TODO: fix this case
-//	it('classifies 0-class samples', function() {
-//		classifier.classify("I want nothing").should.eql([]);
-//	});
-})
+  it("classifies 3-class samples", function() {
+    classifier
+      .classify("I want cc and aa and bb")
+      .sorted()
+      .should.eql(["A", "B", "C"]);
+  });
+
+  // TODO: fix this case
+  //	it('classifies 0-class samples', function() {
+  //		classifier.classify("I want nothing").should.eql([]);
+  //	});
+});
 
 /*describe('Multi-Label MCS Classifier Trained on two-class inputs', function() {
 	var classifier = new MulticlassSegmentationBayes();
