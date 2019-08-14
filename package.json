@@ -1,11 +1,12 @@
 {
   "name": "neuro.js",
-  "description": "Machine learning for Nodejs.",
-  "version": "0.1.4",
+  "description": "Neuro.js is machine learning framework for building AI assistants and chat-bots.",
+  "version": "0.1.5",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
+  "homepage": "https://neuro.js.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/intelligo-systems/intelligo.js.git"
+    "url": "https://github.com/intelligo-systems/neuro.git"
   },
   "engines": {
     "node": ">=0.12"
