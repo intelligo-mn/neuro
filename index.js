@@ -1,4 +1,4 @@
-export const classifiers = require('./src/core');
-export const features = require('./src/features');
-export const formats = require('./src/formats');
-export const utils = require('./src/utils');
+export const classifiers = require('./dist/core');
+export const features = require('./dist/features');
+export const formats = require('./dist/formats');
+export const utils = require('./dist/utils');

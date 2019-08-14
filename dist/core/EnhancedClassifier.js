@@ -3,19 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
-
-var _features = require("../features");
+exports.EnhancedClassifier = void 0;
 
 var _lodash = _interopRequireWildcard(require("lodash"));
 
-var _hash = _interopRequireDefault(require("../utils/hash"));
+var _features = require("../features");
 
 var _list = require("../utils/list");
 
 var _multilabelutils = require("./multilabel/multilabelutils");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
 
@@ -81,7 +77,7 @@ function () {
     this.tokenizer = opts.tokenizer;
     this.instanceFilterRule = opts.instanceFilter; // this.spellChecker =  [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
     // this.pastTrainingSamples = opts.pastTrainingSamples;
-    // TODO: it looks like the method with creating an array at the definition 
+    // TODO: it looks like the method with creating an array at the definition
     // create an array with the same pointer for every classifier of the given class
 
     this.pastTrainingSamples = [];
@@ -197,10 +193,10 @@ function () {
         for (var index in features) {
           var feature = features[index];
 
-          if (!isNaN(parseInt(feature))) // don't spell-correct numeric features
-            {
-              continue;
-            }
+          if (!isNaN(parseInt(feature))) {
+            // don't spell-correct numeric features
+            continue;
+          }
 
           if (!this.spellChecker[1].exists(feature)) {
             if (this.spellChecker[1].suggest(feature).length != 0) {
@@ -260,7 +256,7 @@ function () {
 
     }
     /**
-     * Online training: 
+     * Online training:
      * Tell the classifier that the given sample belongs to the given classes.
      * @param sample a document.
      * @param classes an array whose VALUES are classes.
@@ -285,7 +281,7 @@ function () {
       });
     }
     /**
-     * Batch training: 
+     * Batch training:
      * Train the classifier with all the given documents.
      * @param dataset an array with objects of the format: {input: sample1, output: [class11, class12...]}
      */
@@ -305,7 +301,7 @@ function () {
       }
 
       dataset = dataset.map(function (datum) {
-        if (typeof this.InputSplitLabel === 'function') {
+        if (typeof this.InputSplitLabel === "function") {
           datum.output = this.InputSplitLabel((0, _multilabelutils.normalizeOutputLabels)(datum.output));
         } else {
           datum.output = normalizeClasses(datum.output, this.labelLookupTable);
@@ -336,7 +332,7 @@ function () {
       this.classifier.trainBatch(dataset);
     }
     /**
-     * internal function - classify a single segment of the input (used mainly when there is an inputSplitter) 
+     * internal function - classify a single segment of the input (used mainly when there is an inputSplitter)
      * @param sample a document.
      * @return an array whose VALUES are classes.
      */
@@ -441,7 +437,7 @@ function () {
         }
       }
 
-      if (typeof this.OutputSplitLabel === 'function') {
+      if (typeof this.OutputSplitLabel === "function") {
         // classes = this.OutputSplitLabel(classes, this.Observable, sample, explanations)
         // var classes = []
         // if (_.isArray(explanations))
@@ -542,6 +538,8 @@ function () {
   return EnhancedClassifier;
 }();
 
+exports.EnhancedClassifier = EnhancedClassifier;
+
 var stringifyClass = function stringifyClass(aClass) {
   return (0, _lodash["default"])(aClass).isString() ? aClass : JSON.stringify(aClass);
 };
@@ -553,6 +551,3 @@ var normalizeClasses = function normalizeClasses(classes, labelLookupTable) {
   classes.sort();
   return classes;
 };
-
-var _default = EnhancedClassifier;
-exports["default"] = _default;

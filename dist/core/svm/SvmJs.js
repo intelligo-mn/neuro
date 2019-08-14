@@ -1,21 +1,20 @@
 "use strict";
 
-/**
- * A wrapper for karpathy's SVM.js package: https://github.com/karpathy/svmjs
- *
- *  This is a binary SVM and is trained using the SMO algorithm.
- *  
- *  Reference: "The Simplified SMO Algorithm" (http://math.unt.edu/~hsp0009/smo.pdf)
- *
- * @author Erel Segal-haLevi
- * @since 2013-09-09
- */
-var SvmJsBase = require("svm").SVM;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
-function SvmJs(opts) {
-  this.base = new SvmJsBase();
+var _svm = require("svm");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SvmJs = function SvmJs(opts) {
+  _classCallCheck(this, SvmJs);
+
+  this.base = new _svm.SVM();
   this.opts = opts; // options for SvmJsBase.train
-}
+};
 
 SvmJs.prototype = {
   trainOnline: function trainOnline(features, label) {
@@ -33,7 +32,7 @@ SvmJs.prototype = {
 
   /**
    * @param features - a feature-value hash.
-   * @param explain - int - if positive, an "explanation" field, with the given length, will be added to the result.  
+   * @param explain - int - if positive, an "explanation" field, with the given length, will be added to the result.
    * @param continuous_output if true, return the net classification score. If false [default], return 0 or 1.
    * @return the binary classification - 0 or 1.
    */
@@ -83,4 +82,5 @@ SvmJs.prototype = {
     this.base.fromJSON(json);
   }
 };
-module.exports = SvmJs;
+var _default = SvmJs;
+exports["default"] = _default;

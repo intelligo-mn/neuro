@@ -1,14 +1,16 @@
-var _ = require("underscore")._;
+import { _ } from "underscore";
 
-var MemoryBackend = function() {
-  this.catCounts = {};
-  this.wordCounts = {};
+class MemoryBackend {
+  constructor() {
+    this.catCounts = {};
+    this.wordCounts = {};
+  }
 }
 
 MemoryBackend.prototype = {
-  async : false,
+  async: false,
 
-  incCounts : function(catIncs, wordIncs) {
+  incCounts: function(catIncs, wordIncs) {
     _(catIncs).each(function(inc, cat) {
       this.catCounts[cat] = this.catCounts[cat] + inc || inc;
     }, this);
@@ -21,22 +23,23 @@ MemoryBackend.prototype = {
     }, this);
   },
 
-  getCats : function() {
+  getCats: function() {
     return this.catCounts;
   },
 
-  getWordCounts : function(words, cats) {
+  getWordCounts: function(words, cats) {
     return this.wordCounts;
   },
-  
-  toJSON : function() {
-    return {cats: this.catCounts, words: this.wordCounts}
+
+  toJSON: function() {
+    return { cats: this.catCounts, words: this.wordCounts };
   },
-  
-  fromJSON : function(json) {
+
+  fromJSON: function(json) {
     this.catCounts = json.cats;
     this.wordCounts = json.words;
   }
-}
+};
 
-exports.MemoryBackend = MemoryBackend;
+const _MemoryBackend = MemoryBackend;
+export { _MemoryBackend as MemoryBackend };

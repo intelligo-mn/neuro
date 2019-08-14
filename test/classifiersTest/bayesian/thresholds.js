@@ -4,8 +4,7 @@
 // https://github.com/harthur/classifier
 
 
-var assert = require('should'),
-     classifiers = require("../../../dist/core");
+import { classifiers } from "./../../../dist";
 
 var wordcounts = function(sentence) {
 	return sentence.split(' ').reduce(function(counts, word) {
@@ -33,20 +32,20 @@ describe('thresholds', function() {
   });
 
   it('categorize with default thresholds', function() {
-    assert.equal(bayes.classify(wordcounts("a")), "spam");
-    assert.equal(bayes.classify(wordcounts("b")), "notspam");
-    assert.equal(bayes.classify(wordcounts("c")), "spam");
-    assert.equal(bayes.classify(wordcounts("d")), "notspam");
-    assert.equal(bayes.classify(wordcounts("e")), "notspam");
+    equal(bayes.classify(wordcounts("a")), "spam");
+    equal(bayes.classify(wordcounts("b")), "notspam");
+    equal(bayes.classify(wordcounts("c")), "spam");
+    equal(bayes.classify(wordcounts("d")), "notspam");
+    equal(bayes.classify(wordcounts("e")), "notspam");
   })
 
   it('categorize with really high thresholds', function() {
     bayes.setThresholds({spam: 9, notspam: 9});
 
-    assert.equal(bayes.classify(wordcounts("a")), "unclassified");
-    assert.equal(bayes.classify(wordcounts("b")), "unclassified");
-    assert.equal(bayes.classify(wordcounts("c")), "unclassified");
-    assert.equal(bayes.classify(wordcounts("d")), "unclassified");
-    assert.equal(bayes.classify(wordcounts("e")), "unclassified");
+    equal(bayes.classify(wordcounts("a")), "unclassified");
+    equal(bayes.classify(wordcounts("b")), "unclassified");
+    equal(bayes.classify(wordcounts("c")), "unclassified");
+    equal(bayes.classify(wordcounts("d")), "unclassified");
+    equal(bayes.classify(wordcounts("e")), "unclassified");
   })
 })

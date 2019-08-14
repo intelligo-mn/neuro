@@ -5,13 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.hammingDistance = hammingDistance;
 
-/** 
- *
- * Calculate Hamming distance between two sets 
- *
- */
-
 /**
+ * Calculate Hamming distance between two sets
  * @param a, b - arrays
  * @return number of elements in a-b plus number of elements in b-a
  */

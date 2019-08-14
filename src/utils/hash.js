@@ -16,7 +16,7 @@
  *
  * Comments start with '#' and end with end-of-line.
  */
-exports.fromString = function(string) {
+export function fromString(string) {
 	var lines = string.split(/[\n\r]/g);
 	var hash = {};
 	for (var i=0; i<lines.length; ++i) {
@@ -37,14 +37,14 @@ exports.fromString = function(string) {
 		hash[key]=value;
 	}
 	return hash;
-};
+}
 
 /**
  * add one hash to another (target += source)
  * @param target [input and output]
  * @param source [input]: will be added to target.
  */
-exports.add  = function(target, source) {
+export function add(target, source) {
 	for (var feature in source) {
 		if (!(feature in target))
 			target[feature]=0;
@@ -52,7 +52,7 @@ exports.add  = function(target, source) {
 		target[feature] += source[feature];
 	}
 	return target;
-};
+}
  
 /**
  * add one hash to another (target += scalar * source)
@@ -60,7 +60,7 @@ exports.add  = function(target, source) {
  * @param source [input]
  * @param scalar [input]
  */
-exports.addtimes  = function(target, scalar, source) {
+export function addtimes(target, scalar, source) {
 	for (var feature in source) {
 		if (!(feature in target))
 			target[feature]=0;
@@ -68,14 +68,14 @@ exports.addtimes  = function(target, scalar, source) {
 		target[feature] += scalar*source[feature];
 	}
 	return target;
-};
+}
 
 /**
  * multiply one hash by another (elementwise multiplication).
  * @param target [input and output]
  * @param source [input]: target will be multiplied by it.
  */
-exports.multiply  = function(target, source) {
+export function multiply(target, source) {
 	for (var feature in source) {
 		if (!(feature in target))
 			target[feature]=1;
@@ -83,20 +83,20 @@ exports.multiply  = function(target, source) {
 		target[feature] *= source[feature];
 	}
 	return target;
-};
+}
 
 /**
  * multiply a hash by a scalar.
  * @param target [input and output]
  * @param source [input]: target will be multiplied by it.
  */
-exports.multiply_scalar  = function(target, source) {
+export function multiply_scalar(target, source) {
 	for (var feature in target) {
 		if (toString.call(target[feature]) != '[object Number]') continue;
 		target[feature] *= source;
 	}
 	return target;
-};
+}
 
 /**
  * calculate the scalar product (dot product) of the given two hashes.
@@ -105,7 +105,7 @@ exports.multiply_scalar  = function(target, source) {
  * @return a scalar - the sum of elementwise products.
  * @note Usually, there are much less features than weights.
  */
-exports.inner_product = function(features, weights) {
+export function inner_product(features, weights) {
 	var result = 0;
 	for (var feature in features) {
 			if (feature in weights) {
@@ -115,7 +115,7 @@ exports.inner_product = function(features, weights) {
 			}
 	}
 	return result;
-};
+}
 
 /**
  * calculate the vector dot product of the given two hashes.
@@ -124,61 +124,61 @@ exports.inner_product = function(features, weights) {
  * @return a hash - for each key of weights, return the dot product of the given row with the features vector.
  * @note Usually, there are much less features than weights.
  */
-exports.inner_product_matrix = function(features, weights) {
+export function inner_product_matrix(features, weights) {
 	var result = {};
 	for (let category in weights) {
-		result[category] = exports.inner_product(features, weights[category]);
+		result[category] = inner_product(features, weights[category]);
 	}
 	return result;
-};
+}
 
-exports.sum_of_values = function(weights) {
+export function sum_of_values(weights) {
 	var result = 0;
 	for (var feature in weights)
 		result += weights[feature];
 	return result;
-};
+}
 
-exports.sum_of_absolute_values = function(weights) {
+export function sum_of_absolute_values(weights) {
 	var result = 0;
 	for (var feature in weights)
 		result += Math.abs(weights[feature]);
 	return result;
-};
+}
 
-exports.sum_of_square_values = function(weights) {
+export function sum_of_square_values(weights) {
 	var result = 0;
 	for (var feature in weights)
 		result += Math.pow(weights[feature],2);
 	return result;
-};
+}
 
 /**
  * Normalize the given hash, such that the sum of values is 1.
  * Unless, of course, the current sum is 0, in which case, nothing is done. 
  */
-exports.normalize_sum_of_values_to_1 = function(features) {
-	var sum = exports.sum_of_absolute_values(features);
+export function normalize_sum_of_values_to_1(features) {
+	var sum = sum_of_absolute_values(features);
 	if (sum!=0)
-		exports.multiply_scalar(features, 1/sum);
-};
+		multiply_scalar(features, 1/sum);
+}
 
 /**
  * Normalize the given hash, such that the sum of squares of the values is 1.
  * Unless, of course, the current sum is 0, in which case, nothing is done. 
  */
-exports.normalize_sum_of_squares_to_1 = function(features) {
-	var sum = exports.sum_of_square_values(features);
+export function normalize_sum_of_squares_to_1(features) {
+	var sum = sum_of_square_values(features);
 	if (sum!=0)
-		exports.multiply_scalar(features, 1/Math.sqrt(sum));
-};
+		multiply_scalar(features, 1/Math.sqrt(sum));
+}
 
 
 /**
  * @param array [input]
  * @return a string of the given hash, sorted by keys.
  */
-exports.stringify_sorted = function(weights, separator) {
+export function stringify_sorted(weights, separator) {
 	var result = "{" + separator;
 	var keys = Object.keys(weights);
 	keys.sort();
@@ -192,7 +192,7 @@ exports.stringify_sorted = function(weights, separator) {
 	}
 	result += "}";
 	return result;	
-};
+}
 
 
 /**
@@ -201,7 +201,7 @@ exports.stringify_sorted = function(weights, separator) {
  * - an array ['a', 'b', 'c'..] to a hash {'a': true, 'b': true, 'c': true};
  * - a string 'a' to a hash {'a': true}.
  */
-exports.normalized = function(object) {
+export function normalized(object) {
 	if (Array.isArray(object)) {
 		var result = {}; 
 		for (var i=0; i<object.length; ++i) 
@@ -214,7 +214,7 @@ exports.normalized = function(object) {
 		result[stringifyIfNeeded(object)]=true; 
 		return result;
 	}
-};
+}
 
 
 var stringifyIfNeeded = function (label) {

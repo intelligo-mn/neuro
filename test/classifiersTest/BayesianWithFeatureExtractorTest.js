@@ -1,7 +1,7 @@
 import { EnhancedClassifier, Bayesian } from '../../dist/core';
 import { NGramsOfWords } from '../../dist/features';
 
-var UnigramBayesianClassifier = EnhancedClassifier.bind(this, {
+var UnigramBayesianClassifier = new EnhancedClassifier(this, {
 	classifierType:   Bayesian.bind(this, {
 		globalThreshold:  1.5
 	}),

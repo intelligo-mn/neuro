@@ -1,5 +1,23 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fromString = fromString;
+exports.add = add;
+exports.addtimes = addtimes;
+exports.multiply = multiply;
+exports.multiply_scalar = multiply_scalar;
+exports.inner_product = inner_product;
+exports.inner_product_matrix = inner_product_matrix;
+exports.sum_of_values = sum_of_values;
+exports.sum_of_absolute_values = sum_of_absolute_values;
+exports.sum_of_square_values = sum_of_square_values;
+exports.normalize_sum_of_values_to_1 = normalize_sum_of_values_to_1;
+exports.normalize_sum_of_squares_to_1 = normalize_sum_of_squares_to_1;
+exports.stringify_sorted = stringify_sorted;
+exports.normalized = normalized;
+
 /**
  * Static utilities for hashes (= associative arrays = Javascript objects).
  * 
@@ -17,7 +35,7 @@
  *
  * Comments start with '#' and end with end-of-line.
  */
-exports.fromString = function (string) {
+function fromString(string) {
   var lines = string.split(/[\n\r]/g);
   var hash = {};
 
@@ -45,7 +63,7 @@ exports.fromString = function (string) {
   }
 
   return hash;
-};
+}
 /**
  * add one hash to another (target += source)
  * @param target [input and output]
@@ -53,7 +71,7 @@ exports.fromString = function (string) {
  */
 
 
-exports.add = function (target, source) {
+function add(target, source) {
   for (var feature in source) {
     if (!(feature in target)) target[feature] = 0;
     if (toString.call(target[feature]) != '[object Number]') continue;
@@ -61,7 +79,7 @@ exports.add = function (target, source) {
   }
 
   return target;
-};
+}
 /**
  * add one hash to another (target += scalar * source)
  * @param target [input and output]
@@ -70,7 +88,7 @@ exports.add = function (target, source) {
  */
 
 
-exports.addtimes = function (target, scalar, source) {
+function addtimes(target, scalar, source) {
   for (var feature in source) {
     if (!(feature in target)) target[feature] = 0;
     if (toString.call(target[feature]) != '[object Number]') continue;
@@ -78,7 +96,7 @@ exports.addtimes = function (target, scalar, source) {
   }
 
   return target;
-};
+}
 /**
  * multiply one hash by another (elementwise multiplication).
  * @param target [input and output]
@@ -86,7 +104,7 @@ exports.addtimes = function (target, scalar, source) {
  */
 
 
-exports.multiply = function (target, source) {
+function multiply(target, source) {
   for (var feature in source) {
     if (!(feature in target)) target[feature] = 1;
     if (toString.call(target[feature]) != '[object Number]') continue;
@@ -94,7 +112,7 @@ exports.multiply = function (target, source) {
   }
 
   return target;
-};
+}
 /**
  * multiply a hash by a scalar.
  * @param target [input and output]
@@ -102,14 +120,14 @@ exports.multiply = function (target, source) {
  */
 
 
-exports.multiply_scalar = function (target, source) {
+function multiply_scalar(target, source) {
   for (var feature in target) {
     if (toString.call(target[feature]) != '[object Number]') continue;
     target[feature] *= source;
   }
 
   return target;
-};
+}
 /**
  * calculate the scalar product (dot product) of the given two hashes.
  * @param features [input] - a hash representing a 1-dimensional vector.
@@ -119,7 +137,7 @@ exports.multiply_scalar = function (target, source) {
  */
 
 
-exports.inner_product = function (features, weights) {
+function inner_product(features, weights) {
   var result = 0;
 
   for (var feature in features) {
@@ -131,7 +149,7 @@ exports.inner_product = function (features, weights) {
   }
 
   return result;
-};
+}
 /**
  * calculate the vector dot product of the given two hashes.
  * @param features [input] - a hash representing a 1-dimensional vector.
@@ -141,17 +159,17 @@ exports.inner_product = function (features, weights) {
  */
 
 
-exports.inner_product_matrix = function (features, weights) {
+function inner_product_matrix(features, weights) {
   var result = {};
 
   for (var category in weights) {
-    result[category] = exports.inner_product(features, weights[category]);
+    result[category] = inner_product(features, weights[category]);
   }
 
   return result;
-};
+}
 
-exports.sum_of_values = function (weights) {
+function sum_of_values(weights) {
   var result = 0;
 
   for (var feature in weights) {
@@ -159,9 +177,9 @@ exports.sum_of_values = function (weights) {
   }
 
   return result;
-};
+}
 
-exports.sum_of_absolute_values = function (weights) {
+function sum_of_absolute_values(weights) {
   var result = 0;
 
   for (var feature in weights) {
@@ -169,9 +187,9 @@ exports.sum_of_absolute_values = function (weights) {
   }
 
   return result;
-};
+}
 
-exports.sum_of_square_values = function (weights) {
+function sum_of_square_values(weights) {
   var result = 0;
 
   for (var feature in weights) {
@@ -179,34 +197,34 @@ exports.sum_of_square_values = function (weights) {
   }
 
   return result;
-};
+}
 /**
  * Normalize the given hash, such that the sum of values is 1.
  * Unless, of course, the current sum is 0, in which case, nothing is done. 
  */
 
 
-exports.normalize_sum_of_values_to_1 = function (features) {
-  var sum = exports.sum_of_absolute_values(features);
-  if (sum != 0) exports.multiply_scalar(features, 1 / sum);
-};
+function normalize_sum_of_values_to_1(features) {
+  var sum = sum_of_absolute_values(features);
+  if (sum != 0) multiply_scalar(features, 1 / sum);
+}
 /**
  * Normalize the given hash, such that the sum of squares of the values is 1.
  * Unless, of course, the current sum is 0, in which case, nothing is done. 
  */
 
 
-exports.normalize_sum_of_squares_to_1 = function (features) {
-  var sum = exports.sum_of_square_values(features);
-  if (sum != 0) exports.multiply_scalar(features, 1 / Math.sqrt(sum));
-};
+function normalize_sum_of_squares_to_1(features) {
+  var sum = sum_of_square_values(features);
+  if (sum != 0) multiply_scalar(features, 1 / Math.sqrt(sum));
+}
 /**
  * @param array [input]
  * @return a string of the given hash, sorted by keys.
  */
 
 
-exports.stringify_sorted = function (weights, separator) {
+function stringify_sorted(weights, separator) {
   var result = "{" + separator;
   var keys = Object.keys(weights);
   keys.sort();
@@ -222,7 +240,7 @@ exports.stringify_sorted = function (weights, separator) {
 
   result += "}";
   return result;
-};
+}
 /**
  * Convert any object to a hash (representing a set):
  *
@@ -231,7 +249,7 @@ exports.stringify_sorted = function (weights, separator) {
  */
 
 
-exports.normalized = function (object) {
+function normalized(object) {
   if (Array.isArray(object)) {
     var result = {};
 
@@ -247,7 +265,7 @@ exports.normalized = function (object) {
     result[stringifyIfNeeded(object)] = true;
     return result;
   }
-};
+}
 
 var stringifyIfNeeded = function stringifyIfNeeded(label) {
   return typeof label === 'string' ? label : JSON.stringify(label);
