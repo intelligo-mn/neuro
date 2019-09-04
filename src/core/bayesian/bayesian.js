@@ -1,4 +1,4 @@
-var _ = require("underscore")._;
+var _ = require("lodash")._;
 
 /**
  * A multi-class single-label Bayes classifier.
@@ -98,7 +98,7 @@ export class Bayesian {
       for (var cat in probs) probs[cat] = probs[cat] / sum;
     }
 
-    var pairs = _.pairs(probs); // pairs of [category,probability], for all categories that appeared in the training set.
+    var pairs = _.toPairs(probs); // pairs of [category,probability], for all categories that appeared in the training set.
     //console.dir(pairs);
     if (pairs.length == 0) {
       return { category: this.default, probability: 0 };
@@ -157,13 +157,9 @@ export class Bayesian {
     // times word appears in a doc in this cat / docs in this cat
     var probWordGivenCat = (wordCounts[cat] || 0) / cats[cat];
 
-    var totalWordCount = _(cats).reduce(
-      function(sum, p, cat) {
-        return sum + (wordCounts[cat] || 0);
-      },
-      0,
-      this
-    );
+    var totalWordCount = _(cats).reduce((sum, p, cat) => {
+      return sum + (wordCounts[cat] || 0);
+    }, 0);
     // get weighted average with assumed so prob won't be extreme on rare words
     var modifiedProbGivenCat =
       (this.weight * this.assumed + totalWordCount * probWordGivenCat) /
@@ -179,27 +175,23 @@ export class Bayesian {
     }, 0); // total number of training samples in all categories
 
     var probs = {};
-    _(cats).each(function(catCount, cat) {
+    _(cats).forEach((catCount, cat) => {
       var catPriorProb = (catCount || 0) / numDocs;
 
       // The probability to see a document is the product
       //     of the probability to see each word in the document.
-      var docProb = _(Object.keys(document)).reduce(
-        function(prob, word) {
-          var wordCounts = counts[word] || {};
-          var probWordGivenCat = this.wordProb(word, cat, cats, wordCounts);
-          var probWordsGivenCat = Math.pow(probWordGivenCat, document[word]);
-          //console.log("probWordGivenCat="+probWordGivenCat+" probWordsGivenCat="+probWordsGivenCat+" document[word]="+document[word])
-          return prob * probWordsGivenCat;
-        },
-        1,
-        this
-      );
+      var docProb = _(Object.keys(document)).reduce((prob, word) => {
+        var wordCounts = counts[word] || {};
+        var probWordGivenCat = this.wordProb(word, cat, cats, wordCounts);
+        var probWordsGivenCat = Math.pow(probWordGivenCat, document[word]);
+        //console.log("probWordGivenCat="+probWordGivenCat+" probWordsGivenCat="+probWordsGivenCat+" document[word]="+document[word])
+        return prob * probWordsGivenCat;
+      }, 1);
       //console.log("docProb="+docProb)
 
       // the probability this doc is in this category
       probs[cat] = catPriorProb * docProb;
-    }, this);
+    });
     return probs;
   }
 
