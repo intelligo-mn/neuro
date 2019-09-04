@@ -1,7 +1,7 @@
 {
   "name": "neuro.js",
   "description": "Neuro.js is machine learning framework for building AI assistants and chat-bots.",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "author": "Turtuvshin Byambaa <toroo.byamba@gmail.com>",
   "homepage": "https://neuro.js.org",
   "repository": {
