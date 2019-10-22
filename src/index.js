@@ -1,5 +1,3 @@
-import Bayesian from "./core/bayesian/bayesian";
-import DecisionTree from "./core/decisiontree/DecisionTree";
 import EnhancedClassifier from "./core/EnhancedClassifier";
 import multilabel from "./core/multilabel";
 import NeuralNetwork from "./core/neural/NeuralNetwork";
@@ -14,12 +12,10 @@ import utils from "./utils";
 export default {
   classifiers: {
     NeuralNetwork,
-    Bayesian,
     SvmJs,
     SvmLinear,
     SvmPerf,
     Winnow,
-    DecisionTree,
     multilabel,
     EnhancedClassifier
   },

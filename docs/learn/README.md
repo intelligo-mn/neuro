@@ -92,40 +92,6 @@ var birdClassifier = new MyWinnow();
 // continue as above
 ```
 
-### Explanations
-
-Some classifiers can return "explanations" - additional information that explains how the classification result has been derived:
-
-```js
-var colorClassifier = new neuro.classifiers.Bayesian();
-
-colorClassifier.trainBatch([
-  { input: { r: 0.03, g: 0.7, b: 0.5 }, output: "black" },
-  { input: { r: 0.16, g: 0.09, b: 0.2 }, output: "white" },
-  { input: { r: 0.5, g: 0.5, b: 1.0 }, output: "white" }
-]);
-
-console.log(
-  colorClassifier.classify({ r: 1, g: 0.4, b: 0 }, /* explanation level = */ 1)
-);
-```
-
-The explanation feature is experimental and is supported differently for different classifiers. For example, for the Bayesian classifier it returns the probabilities for each category:
-
-```js
-{ classes: 'white',
-	explanation: [ 'white: 0.0621402182289608', 'black: 0.031460948468170505' ] }
-```
-
-While for the winnow classifier it returns the relevance (feature-value times feature-weight) for each feature:
-
-```js
-{ classification: 1,
-	explanation: [ 'bias+1.12', 'r+1.08', 'g+0.25', 'b+0.00' ] }
-```
-
-WARNING: The internal format of the explanations might change without notice. The explanations should be used for presentation purposes only (and not, for example, for extracting the actual numbers).
-
 ## Multi-Label Classification
 
 In binary classification, the output is 0 or 1;

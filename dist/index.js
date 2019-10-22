@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _bayesian = _interopRequireDefault(require("./core/bayesian/bayesian"));
-
-var _DecisionTree = _interopRequireDefault(require("./core/decisiontree/DecisionTree"));
-
 var _EnhancedClassifier = _interopRequireDefault(require("./core/EnhancedClassifier"));
 
 var _multilabel = _interopRequireDefault(require("./core/multilabel"));
@@ -34,12 +30,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var _default = {
   classifiers: {
     NeuralNetwork: _NeuralNetwork["default"],
-    Bayesian: _bayesian["default"],
     SvmJs: _SvmJs["default"],
     SvmLinear: _SvmLinear["default"],
     SvmPerf: _SvmPerf["default"],
     Winnow: _WinnowHash["default"],
-    DecisionTree: _DecisionTree["default"],
     multilabel: _multilabel["default"],
     EnhancedClassifier: _EnhancedClassifier["default"]
   },

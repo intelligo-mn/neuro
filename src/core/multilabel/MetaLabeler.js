@@ -4,32 +4,34 @@ var _ = require("underscore")._;
 
 /**
  * MetaLabeler - Multi-label classifier, based on:
- * 
+ *
  * Tang Lei, Rajan Suju, Narayanan Vijay K.. Large scale multi-label classification via metalabeler in Proceedings of the 18th international conference on World wide webWWW '09(New York, NY, USA):211-220ACM 2009.
  * http://www.citeulike.org/user/erelsegal-halevi/article/4860265
- * 
+ *
  * A MetaLabeler uses two multi-class classifiers to create a single multi-label classifier. One is called "ranker" and the other is called "counter".
- * 
+ *
  * The MetaLabeler assigns labels to a sample in the following two stages:
  *  - Stage 1: Ranking. The sample is sent to the "ranker", which returns all available labels ordered from the most relevant to the least relevant.
  *  - Stage 2: Counting. The sample is sent to the "counter", which returns integer C >= 0 which represents a number of labels.
- * The MetaLabeler returns the C most relevant labels from the list returned by the ranker.   
- * 
+ * The MetaLabeler returns the C most relevant labels from the list returned by the ranker.
+ *
  * @param opts
- *            rankerType (mandatory) - the type of the multi-class classifier used for ranking the labels. 
- *            counterType (mandatory) - the type of the multi-class classifier used for selecting the number of labels. 
+ *            rankerType (mandatory) - the type of the multi-class classifier used for ranking the labels.
+ *            counterType (mandatory) - the type of the multi-class classifier used for selecting the number of labels.
  */
-var MetaLabeler = function(opts) {
-	if (!opts.rankerType) {
-		console.dir(opts);
-		throw new Error("opts.rankerType not found");
+class MetaLabeler {
+	constructor(opts) {
+		if (!opts.rankerType) {
+			console.dir(opts);
+			throw new Error("opts.rankerType not found");
+		}
+		if (!opts.counterType) {
+			console.dir(opts);
+			throw new Error("opts.counterType not found");
+		}
+		this.ranker = new opts.rankerType();
+		this.counter = new opts.counterType();
 	}
-	if (!opts.counterType) {
-		console.dir(opts);
-		throw new Error("opts.counterType not found");
-	}
-	this.ranker = new opts.rankerType();
-	this.counter = new opts.counterType();
 }
 
 MetaLabeler.prototype = {
