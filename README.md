@@ -31,7 +31,7 @@ or translating any document here to your language. [Find more information in COD
 
 ## License
 
-> Copyright (C) 2019 Intelligo Systems.  
+> Copyright (C) 2019 Intelligo LLC.  
 > neuro.js is open-sourced software licensed under the [MIT](https://opensource.org/licenses/MIT) license.  
 > (See the [LICENSE](https://github.com/intelligo-systems/neuro.js/blob/master/LICENSE) file for the whole license text.)
 
