@@ -20,7 +20,7 @@
     "lodash": "4.17.15",
     "sprintf": "0.1.5",
     "svm": "0.1.1",
-    "temp": "0.9.1",
+    "temp": "0.9.4",
     "underscore": "1.9.1",
     "wordsworth": "0.1.0"
   },
