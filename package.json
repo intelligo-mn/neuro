@@ -21,7 +21,7 @@
     "sprintf": "0.1.5",
     "svm": "0.1.1",
     "temp": "0.9.1",
-    "underscore": "1.9.1",
+    "underscore": "1.12.1",
     "wordsworth": "0.1.0"
   },
   "devDependencies": {
